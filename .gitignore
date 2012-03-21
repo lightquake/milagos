@@ -1,0 +1,3 @@
+/config/client_session_key.aes
+*.sqlite3
+/static/tmp
