@@ -143,10 +143,9 @@ instance YesodAuth Milagos where
 
     getAuthId creds = runDB $ do
         x <- getBy $ UniqueUser $ credsIdent creds
-        case x of
-            Just (Entity uid _) -> return $ Just uid
-            Nothing -> do
-                fmap Just $ insert $ User (credsIdent creds) Nothing
+        return $ case x of
+            Just (Entity uid _) -> Just uid
+            Nothing -> Nothing
 
     -- You can add other plugins like BrowserID, email or OAuth here
     authPlugins _ = [authBrowserId, authGoogleEmail]
