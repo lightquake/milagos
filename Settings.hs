@@ -60,11 +60,9 @@ widgetFile = Yesod.Default.Util.widgetFileNoReload
 #endif
 
 data Extra = Extra
-    { extraCopyright :: Text
-    , extraAnalytics :: Maybe Text -- ^ Google Analytics
+    { extraPassword :: Text
     } deriving Show
 
 parseExtra :: DefaultEnv -> Object -> Parser Extra
 parseExtra _ o = Extra
-    <$> o .:  "copyright"
-    <*> o .:? "analytics"
+    <$> o .:  "password"
