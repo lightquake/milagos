@@ -40,18 +40,13 @@ import qualified Data.Text.Lazy.Encoding
 import Network.Mail.Mime (sendmail)
 #endif
 
+import Types
+import Model.PasswordAuth
+
 -- | The site argument for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
 -- starts running, such as database connections. Every handler will have
 -- access to the data present here.
-data Milagos = Milagos
-    { settings :: AppConfig DefaultEnv Extra
-    , getLogger :: Logger
-    , getStatic :: Static -- ^ Settings for static file serving.
-    , connPool :: Database.Persist.Store.PersistConfigPool Settings.PersistConfig -- ^ Database connection pool.
-    , httpManager :: Manager
-    , persistConfig :: Settings.PersistConfig
-    }
 
 -- Set up i18n messages. See the message folder.
 mkMessage "Milagos" "messages" "en"
@@ -133,19 +128,17 @@ instance YesodPersist Milagos where
             f
             (connPool master)
 
+
+
 instance YesodAuth Milagos where
-    type AuthId Milagos = UserId
+    type AuthId Milagos = ()
 
     -- Where to send a user after successful login
     loginDest _ = RootR
     -- Where to send a user after logout
     logoutDest _ = RootR
 
-    getAuthId creds = runDB $ do
-        x <- getBy $ UniqueUser $ credsIdent creds
-        return $ case x of
-            Just (Entity uid _) -> Just uid
-            Nothing -> Nothing
+    getAuthId = const . return $ Just ()
 
     -- You can add other plugins like BrowserID, email or OAuth here
     authPlugins _ = [authBrowserId, authGoogleEmail]
