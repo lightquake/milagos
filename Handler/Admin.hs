@@ -5,7 +5,7 @@ import Import
 postForm :: Form Post
 postForm = renderDivs $ Post
            <$> areq textField "Title" Nothing
-           <*> areq textareaField "Body" Nothing
+           <*> unTextarea `fmap` areq textareaField "Body" Nothing
 
 
 getAdminR :: Handler RepHtml
