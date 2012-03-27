@@ -11,7 +11,7 @@ import Import
 -- inclined, or create a single monolithic file.
 getRootR :: Handler RepHtml
 getRootR = do
-    defaultLayout $ do
-        h2id <- lift newIdent
-        setTitle "milagos homepage"
-        $(widgetFile "homepage")
+  posts <- map entityVal `fmap` (runDB $ selectList [] [Desc PostId])
+  defaultLayout $ do
+    setTitle "Home"
+    $(widgetFile "homepage")

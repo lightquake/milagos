@@ -14,6 +14,10 @@ module Foundation
     ) where
 
 import Prelude
+
+import Control.Applicative ((<$>))
+import Data.Maybe (maybe)
+
 import Yesod
 import Yesod.Static
 import Yesod.Auth
@@ -103,6 +107,10 @@ instance Yesod Milagos where
 
     -- The page to be redirected to when authentication is required.
     authRoute _ = Just $ AuthR LoginR
+
+    -- /admin requires authorization
+    isAuthorized AdminR _ = maybe AuthenticationRequired (const Authorized) <$> maybeAuthId
+    isAuthorized _ _ = return Authorized
 
     messageLogger y loc level msg =
       formatLogText (getLogger y) loc level msg >>= logMsg (getLogger y)

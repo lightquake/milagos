@@ -1,2 +1,3 @@
-<h1>_{MsgHello}
-<h2 ##{h2id}>You do not have Javascript enabled.
+$forall post <- posts
+  <h1>#{postTitle post}</h1>
+  <div>#{postBody post}</div>
