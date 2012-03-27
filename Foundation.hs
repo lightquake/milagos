@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 module Foundation
     ( Milagos (..)
     , Route (..)
@@ -16,12 +17,9 @@ import Prelude
 import Yesod
 import Yesod.Static
 import Yesod.Auth
-import Yesod.Auth.BrowserId
-import Yesod.Auth.GoogleEmail
 import Yesod.Default.Config
 import Yesod.Default.Util (addStaticContentExternal)
-import Yesod.Logger (Logger, logMsg, formatLogText)
-import Network.HTTP.Conduit (Manager)
+import Yesod.Logger (logMsg, formatLogText)
 #ifdef DEVELOPMENT
 import Yesod.Logger (logLazyText)
 #endif
@@ -141,7 +139,8 @@ instance YesodAuth Milagos where
     getAuthId = const . return $ Just ()
 
     -- You can add other plugins like BrowserID, email or OAuth here
-    authPlugins _ = [authBrowserId, authGoogleEmail]
+    authPlugins app =
+      [authPassword (extraPassword . appExtra . settings $ app)]
 
     authHttpManager = httpManager
 

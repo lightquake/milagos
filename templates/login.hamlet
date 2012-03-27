@@ -1,0 +1,3 @@
+<form method=post action=@{th (PluginR "password" (return "login"))}>
+  <label for=password>Login
+  <input type=password name=password>
