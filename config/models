@@ -1,3 +1,11 @@
 Post
     title Text
     body Text
+Tag
+    name Text
+    UniqueTagName name
+
+PostTag
+    postId PostId
+    tagId TagId
+    UniquePostTag postId tagId
