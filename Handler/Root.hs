@@ -1,7 +1,6 @@
 module Handler.Root where
 
 import qualified Data.Text as T
-import Database.Persist.Query.Join
 import Import
 import Text.Blaze
 
@@ -20,20 +19,12 @@ getRootR = do
     setTitle "Home"
     $(widgetFile "homepage")
 
--- | Map a Post entity to its list of tag strings.
-tagsFor :: PersistQuery backend m => Entity (PostGeneric backend) -> backend m [Text]
-tagsFor post = do
-  som <- runJoin $ (selectOneMany (PostTagTagId <-.) postTagTagId)
-           { somFilterMany = [PostTagPostId ==. entityKey post] }
-  return $ map (tagName . entityVal . fst) som
-
 -- | Turn a Post entity into a widget.
 postWidget :: (PersistQuery backend Handler, backend ~ YesodPersistBackend Milagos) =>
               Entity (PostGeneric backend) -> Widget
 postWidget postEnt = do
-  let post = entityVal postEnt
-  tags <- lift . runDB $ tagsFor postEnt
-  liftIO $ print (length tags)
+  FullPost post tagVals <- lift . runDB $ mkFullPost postEnt
+  let tags = map tagName tagVals
   [whamlet|
 <h1>#{postTitle post}
 <div>#{preEscapedText $ postBody post}

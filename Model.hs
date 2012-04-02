@@ -1,10 +1,9 @@
 module Model where
 
-import Prelude
-import Yesod
 import Data.Text (Text)
 import Database.Persist.Quasi
-
+import Prelude
+import Yesod
 
 -- You can define all of your database entities in the entities file.
 -- You can find more information on persistent and how to declare entities

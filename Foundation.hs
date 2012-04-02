@@ -16,7 +16,6 @@ module Foundation
 import Prelude
 
 import Control.Applicative ((<$>))
-import Data.Maybe (maybe)
 
 import Yesod
 import Yesod.Static
