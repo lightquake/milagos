@@ -20,19 +20,18 @@ getRootR = do
     setTitle "Home"
     $(widgetFile "homepage")
 
--- | Map a Post entity to the list of Tag entities that it has as tags.
-tagsFor :: (backend ~ YesodPersistBackend Milagos) =>
-           Entity (PostGeneric backend) -> YesodDB sub Milagos [Entity (TagGeneric backend)]
+-- | Map a Post entity to its list of tag strings.
+tagsFor :: Entity (PostGeneric (YesodPersistBackend Milagos)) -> YesodDB sub Milagos [Text]
 tagsFor post = do
   som <- runJoin $ (selectOneMany (PostTagTagId <-.) postTagTagId)
            { somFilterMany = [PostTagPostId ==. entityKey post] }
-  return $ map fst som
+  return $ map (tagName . entityVal . fst) som
 
 -- | Turn a Post entity into a widget.
 postWidget :: Entity (PostGeneric (YesodPersistBackend Milagos)) -> Widget
 postWidget postEnt = do
   let post = entityVal postEnt
-  tags <- map (tagName . entityVal) <$> (lift . runDB $ tagsFor postEnt)
+  tags <- lift . runDB $ tagsFor postEnt
   liftIO $ print (length tags)
   [whamlet|
 <h1>#{postTitle post}

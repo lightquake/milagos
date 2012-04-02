@@ -33,7 +33,7 @@ postAdminR = do
       _ <- runDB $ do
         postId <- insert (Post (title postf) (body postf))
         -- get the keys and insert into the PostTag many-many table
-        tagKeys <- loadTags (tags postf)
+        tagKeys <- loadTagKeys (tags postf)
         mapM (insert . PostTag postId) tagKeys
       redirect RootR
     _ -> redirect AdminR
@@ -48,8 +48,8 @@ tagListField = Field {
 
 -- | Given a list of Texts that correspond to tag names, return the
 -- Keys for the corresponding tags. Creates the tags if necessary.
-loadTags :: PersistUnique backend m => [Text] -> backend m [Key backend (TagGeneric backend)]
-loadTags = mapM loadTag
+loadTagKeys :: PersistUnique backend m => [Text] -> backend m [Key backend (TagGeneric backend)]
+loadTagKeys = mapM loadTag
  where loadTag tag = do
          maybeTagEnt <- getBy $ UniqueTagName tag
          case maybeTagEnt of

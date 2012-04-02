@@ -41,7 +41,6 @@ postLoginR valid = do
 -- password.
 authPassword :: YesodAuth m => Text -> AuthPlugin m
 authPassword valid = AuthPlugin authName dispatch $ form
-
   where dispatch "POST" ["login"] = postLoginR valid >>= sendResponse
         dispatch _ _              = notFound
         form :: (Route Auth -> Route m) -> GWidget sub m ()
