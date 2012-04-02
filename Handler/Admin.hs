@@ -41,7 +41,7 @@ postAdminR = do
 -- A field for a list of tags, which are comma-separated.
 tagListField :: Field sub master [Text]
 tagListField = Field {
-    fieldParse = \vals -> return . Right . Just . map T.strip $ vals >>= T.splitOn ","
+    fieldParse = \vals -> return . Right . Just . filter (not . T.null) . map T.strip $ vals >>= T.splitOn ","
   , fieldView = \idAttr nameAttr theClass result _ -> [whamlet|
 <input id=#{idAttr} name=#{nameAttr} :not (null theClass):class="#{T.intercalate " " theClass}" type=text value=#{either (const "") (T.intercalate ", ") result}>
 |] }
