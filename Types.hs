@@ -1,15 +1,17 @@
 module Types
   ( Milagos (Milagos, settings, getLogger, getStatic, connPool, httpManager, persistConfig)
+  , Ent
   ) where
 
-import Prelude
-import Yesod.Static
-import Yesod.Default.Config
-import Yesod.Logger (Logger)
-import Network.HTTP.Conduit (Manager)
-import qualified Settings
 import qualified Database.Persist.Store
-import Settings (Extra (..))
+import           Database.Persist.Store
+import           Network.HTTP.Conduit (Manager)
+import           Prelude
+import qualified Settings
+import           Settings (Extra (..))
+import           Yesod.Default.Config
+import           Yesod.Logger (Logger)
+import           Yesod.Static
 
 
 data Milagos = Milagos

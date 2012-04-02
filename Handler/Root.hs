@@ -21,7 +21,8 @@ getRootR = do
     $(widgetFile "homepage")
 
 -- | Map a Post entity to its list of tag strings.
-tagsFor :: Entity (PostGeneric (YesodPersistBackend Milagos)) -> YesodDB sub Milagos [Text]
+tagsFor :: RunJoin (SelectOneMany backend (TagGeneric backend) (PostTagGeneric backend)) b m
+           => Entity (PostGeneric backend) -> b m [Text]
 tagsFor post = do
   som <- runJoin $ (selectOneMany (PostTagTagId <-.) postTagTagId)
            { somFilterMany = [PostTagPostId ==. entityKey post] }
