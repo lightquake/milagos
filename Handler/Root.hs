@@ -21,15 +21,15 @@ getRootR = do
     $(widgetFile "homepage")
 
 -- | Map a Post entity to its list of tag strings.
-tagsFor :: RunJoin (SelectOneMany backend (TagGeneric backend) (PostTagGeneric backend)) b m
-           => Entity (PostGeneric backend) -> b m [Text]
+tagsFor :: PersistQuery backend m => Entity (PostGeneric backend) -> backend m [Text]
 tagsFor post = do
   som <- runJoin $ (selectOneMany (PostTagTagId <-.) postTagTagId)
            { somFilterMany = [PostTagPostId ==. entityKey post] }
   return $ map (tagName . entityVal . fst) som
 
 -- | Turn a Post entity into a widget.
-postWidget :: Entity (PostGeneric (YesodPersistBackend Milagos)) -> Widget
+postWidget :: (PersistQuery backend Handler, backend ~ YesodPersistBackend Milagos) =>
+              Entity (PostGeneric backend) -> Widget
 postWidget postEnt = do
   let post = entityVal postEnt
   tags <- lift . runDB $ tagsFor postEnt
