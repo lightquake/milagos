@@ -25,7 +25,7 @@ getTagR :: Text -> Handler RepHtml
 getTagR tagText = do
   posts <- map postWidget <$> (runDB $ postsWithTag tagText)
   defaultLayout $ do
-    setTitle "Home"
+    setTitle $ toHtml tagText
     $(widgetFile "homepage")
 
 -- | Turn a FullPost entity into a widget.
@@ -46,5 +46,5 @@ getPostR postId = do
     mkFullPost $ Entity postId post
   let posts = [postWidget fullPost]
   defaultLayout $ do
-    setTitle "Home"
+    setTitle $ toHtml . postTitle . fpPost $ fullPost
     $(widgetFile "homepage")
