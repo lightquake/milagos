@@ -36,6 +36,7 @@ library
                      Settings.StaticFiles
                      Handler.Root
                      Handler.Admin
+                     Handler.Renderers
                      Types
 
 

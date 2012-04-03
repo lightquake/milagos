@@ -1,8 +1,8 @@
 module Handler.Root where
 
-import qualified Data.Text as T
-import Import
-import Text.Blaze
+import           Control.Monad
+import           Handler.Renderers
+import           Import
 
 -- This is a handler function for the GET request method on the RootR
 -- resource pattern. All of your resource patterns are defined in
@@ -13,38 +13,24 @@ import Text.Blaze
 -- inclined, or create a single monolithic file.
 getRootR :: Handler RepHtml
 getRootR = do
-  fullPosts <- runDB $ do
-    posts <- selectList [] [Desc PostId]
-    mapM mkFullPost posts
-  let posts = map postWidget fullPosts
+  postEnts <- runDB $ selectList [] [Desc PostId]
+  posts <- mapM postWidget postEnts
   defaultLayout $ do
     setTitle "Home"
     $(widgetFile "homepage")
 
 getTagR :: Text -> Handler RepHtml
 getTagR tagText = do
-  posts <- map postWidget <$> (runDB $ postsWithTag tagText)
+  postEnts <- runDB $ postsWithTag tagText
+  posts <- mapM postWidget postEnts
   defaultLayout $ do
     setTitle $ toHtml tagText
     $(widgetFile "homepage")
 
--- | Turn a FullPost entity into a widget.
-postWidget :: FullPostGeneric backend -> Widget
-postWidget (FullPost post tagVals) = do
-  let tags = map tagName tagVals
-  [whamlet|
-<h1>#{postTitle post}
-<div>#{preEscapedText $ postBody post}
-$if not (null tags)
-  <div>Tagged: #{T.intercalate ", " tags}|]
-
-
 getPostR :: PostId -> Handler RepHtml
 getPostR postId = do
-  fullPost <- runDB $ do
-    post <- get404 postId
-    mkFullPost $ Entity postId post
-  let posts = [postWidget fullPost]
+  postVal <- runDB $ get404 postId
+  posts <- (:[]) <$> postWidget (Entity postId postVal)
   defaultLayout $ do
-    setTitle $ toHtml . postTitle . fpPost $ fullPost
+    setTitle $ toHtml . postTitle $ postVal
     $(widgetFile "homepage")

@@ -1,0 +1,4 @@
+<h1>#{postTitle post}
+<div>#{preEscapedText $ postBody post}
+$if not (null tags)
+  <div>Tagged: #{T.intercalate ", " tags}
