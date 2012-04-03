@@ -6,3 +6,4 @@
 
 / RootR GET
 /admin AdminR GET POST
+/tag/#Text TagR GET

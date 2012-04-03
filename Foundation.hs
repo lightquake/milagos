@@ -13,36 +13,37 @@ module Foundation
     , module Model
     ) where
 
-import Prelude
+import           Prelude
 
-import Control.Applicative ((<$>))
+import           Control.Applicative ((<$>))
 
-import Yesod
-import Yesod.Static
-import Yesod.Auth
-import Yesod.Default.Config
-import Yesod.Default.Util (addStaticContentExternal)
-import Yesod.Logger (logMsg, formatLogText)
+import           Yesod
+import           Yesod.Static
+import           Yesod.Auth
+import           Yesod.Default.Config
+import           Yesod.Default.Util (addStaticContentExternal)
+import           Yesod.Logger (logMsg, formatLogText)
 #ifdef DEVELOPMENT
-import Yesod.Logger (logLazyText)
+import           Yesod.Logger (logLazyText)
 #endif
 import qualified Settings
 import qualified Data.ByteString.Lazy as L
 import qualified Database.Persist.Store
-import Database.Persist.GenericSql
-import Settings (widgetFile, Extra (..))
-import Model
-import Text.Jasmine (minifym)
-import Web.ClientSession (getKey)
-import Text.Hamlet (hamletFile)
+import           Database.Persist.GenericSql
+import           Settings (widgetFile, Extra (..))
+import           Model
+import           Text.Jasmine (minifym)
+import           Web.ClientSession (getKey)
+import           Text.Hamlet (hamletFile)
 #if DEVELOPMENT
 import qualified Data.Text.Lazy.Encoding
 #else
-import Network.Mail.Mime (sendmail)
+import           Network.Mail.Mime (sendmail)
 #endif
 
-import Types
-import Model.PasswordAuth
+import           Data.Text (Text)
+import           Model.PasswordAuth
+import           Types
 
 -- | The site argument for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
