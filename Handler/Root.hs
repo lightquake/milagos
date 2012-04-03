@@ -38,3 +38,13 @@ postWidget (FullPost post tagVals) = do
 $if not (null tags)
   <div>Tagged: #{T.intercalate ", " tags}|]
 
+
+getPostR :: PostId -> Handler RepHtml
+getPostR postId = do
+  fullPost <- runDB $ do
+    post <- get404 postId
+    mkFullPost $ Entity postId post
+  let posts = [postWidget fullPost]
+  defaultLayout $ do
+    setTitle "Home"
+    $(widgetFile "homepage")
