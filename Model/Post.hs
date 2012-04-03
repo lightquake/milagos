@@ -14,7 +14,8 @@ data FullPostGeneric backend = FullPost { fpPost :: PostGeneric backend
 tagsFor :: PersistQuery backend m => Entity (PostGeneric backend) -> backend m [Entity (TagGeneric backend)]
 tagsFor post = do
   som <- runJoin $ (selectOneMany (PostTagTagId <-.) postTagTagId)
-           { somFilterMany = [PostTagPostId ==. entityKey post] }
+           { somFilterMany = [PostTagPostId ==. entityKey post]
+           , somOrderOne = [Asc TagName]}
   return $ map fst som
 
 -- | Given a tag name, return the list of Post entities that have it.
@@ -25,6 +26,7 @@ postsWithTag tagText = do
   case tagEnt' of
     Just tagEnt -> do
      som <- runJoin $ (selectOneMany (PostTagPostId <-.) postTagPostId)
-       {  somFilterMany = [PostTagTagId ==. entityKey tagEnt] }
+       { somFilterMany = [PostTagTagId ==. entityKey tagEnt]
+       , somOrderOne = [Desc PostId] }
      return $ map fst som
     _ -> return []
