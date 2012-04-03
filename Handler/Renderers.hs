@@ -1,8 +1,8 @@
 module Handler.Renderers where
 
-import qualified Data.Text as T
-import           Import
-import           Text.Blaze
+import Import
+import Text.Blaze
+import Prelude (head, tail)
 
 postWidget :: Entity Post -> Handler Widget
 postWidget postEnt = runDB $ do
