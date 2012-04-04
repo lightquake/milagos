@@ -1,0 +1,4 @@
+
+  $forall post <- posts
+    <div .post>
+      ^{post}

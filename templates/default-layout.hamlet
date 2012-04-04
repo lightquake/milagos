@@ -1,3 +1,11 @@
-$maybe msg <- mmsg
+<div .content>
+  <div #header>
+    <div #title>
+      <a .title href=@{RootR}>#{blogTitle}
+
+  $maybe msg <- mmsg
     <div #message>#{msg}
-^{widget}
+  <div #left-column>
+    ^{widget}
+  <div #right-column>
+    This is where tag widgets and stuff will go.

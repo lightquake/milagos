@@ -61,8 +61,10 @@ widgetFile = Yesod.Default.Util.widgetFileNoReload
 
 data Extra = Extra
     { extraPassword :: Text
+    , extraTitle :: Text
     } deriving Show
 
 parseExtra :: DefaultEnv -> Object -> Parser Extra
 parseExtra _ o = Extra
-    <$> o .:  "password"
+    <$> o .: "password"
+    <*> o .: "title"

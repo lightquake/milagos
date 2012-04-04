@@ -1,8 +1,8 @@
 <h1>
-  <a href=@{PostR $ entityKey postEnt}>#{postTitle post}
+  <a .title href=@{PostR $ entityKey postEnt}>#{postTitle post}
 <div>#{preEscapedText $ postBody post}
 $if not (null tags)
   <div>Tagged: #
     <a href=@{TagR $ head tags}>#{head tags}
     $forall tag <- tail tags
-      , <a href=@{TagR tag}>#{tag}
+      , <a href=@{TagR tag}>#{tag}</a>

@@ -17,7 +17,7 @@ getRootR = do
   posts <- mapM postWidget postEnts
   defaultLayout $ do
     setTitle "Home"
-    $(widgetFile "homepage")
+    $(widgetFile "postList")
 
 getTagR :: Text -> Handler RepHtml
 getTagR tagText = do
@@ -25,7 +25,7 @@ getTagR tagText = do
   posts <- mapM postWidget postEnts
   defaultLayout $ do
     setTitle $ toHtml tagText
-    $(widgetFile "homepage")
+    $(widgetFile "postList")
 
 getPostR :: PostId -> Handler RepHtml
 getPostR postId = do
@@ -33,4 +33,4 @@ getPostR postId = do
   posts <- (:[]) <$> postWidget (Entity postId postVal)
   defaultLayout $ do
     setTitle $ toHtml . postTitle $ postVal
-    $(widgetFile "homepage")
+    $(widgetFile "postList")
