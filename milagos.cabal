@@ -54,6 +54,7 @@ library
                 GeneralizedNewtypeDeriving
                 FlexibleContexts
                 EmptyDataDecls
+                NamedFieldPuns
 
 executable         milagos
     if flag(library-only)

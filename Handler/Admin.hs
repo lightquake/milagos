@@ -31,9 +31,9 @@ postAdminR = do
   case result of
     FormSuccess postf -> do
       _ <- runDB $ do
-        postId <- insert (Post (title postf) (body postf))
+        postId <- insert $ mkPost postf
         -- get the keys and insert into the PostTag many-many table
-        tagKeys <- loadTagKeys (tags postf)
+        tagKeys <- loadTagKeys $ tags postf
         mapM (insert . PostTag postId) tagKeys
       redirect RootR
     _ -> redirect AdminR
@@ -54,9 +54,9 @@ postEditPostR postId = do
   case newPost of
     FormSuccess postf -> do
       _ <- runDB $ do
-        replace postId $ Post (title postf) (body postf)
+        replace postId . mkPost $ postf
         -- out with the old tags, in with the new ones
-        tagKeys <- loadTagKeys (tags postf)
+        tagKeys <- loadTagKeys $ tags postf
         deleteWhere [PostTagPostId ==. postId]
         mapM (insert . PostTag postId) tagKeys
 
@@ -87,3 +87,6 @@ mkPostF postId = do
   let postEnt = Entity postId postVal
   tagNames <- map (tagName . entityVal) <$> tagsFor postEnt
   return $ PostF (postTitle postVal) (postBody postVal) tagNames
+
+mkPost :: PostF -> Post
+mkPost (PostF {title, body}) = Post title body

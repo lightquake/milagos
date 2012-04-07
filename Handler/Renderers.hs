@@ -6,10 +6,11 @@ import Yesod.Default.Config
 import Text.Blaze (preEscapedText)
 
 postWidget :: Entity Post -> Handler Widget
-postWidget postEnt = runDB $ do
-  let post = entityVal postEnt
-  tags <- map (tagName . entityVal) <$> tagsFor postEnt
-  return $ $(widgetFile "post")
+postWidget postEnt = do
+  let Entity postKey post = postEnt
+  tags <- runDB (map (tagName . entityVal) <$> tagsFor postEnt)
+  authorized <- (== Authorized) <$> isAuthorized (EditPostR postKey) True
+  return $(widgetFile "post")
 
 tagListWidget :: Widget
 tagListWidget = do
