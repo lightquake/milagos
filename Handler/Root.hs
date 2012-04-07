@@ -34,3 +34,5 @@ getPostR postId = do
   blogLayout $ do
     setTitle $ toHtml . postTitle $ postVal
     $(widgetFile "post-list")
+
+

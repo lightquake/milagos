@@ -106,8 +106,10 @@ instance Yesod Milagos where
     authRoute _ = Just $ AuthR LoginR
 
     -- /admin requires authorization
-    isAuthorized AdminR _ = maybe AuthenticationRequired (const Authorized) <$> maybeAuthId
-    isAuthorized _ _ = return Authorized
+    isAuthorized AdminR = needsAuth
+    isAuthorized (EditPostR _) = needsAuth
+    isAuthorized _ = const $ return Authorized
+
 
     messageLogger y loc level msg =
       formatLogText (getLogger y) loc level msg >>= logMsg (getLogger y)
@@ -120,6 +122,9 @@ instance Yesod Milagos where
 
     -- Place Javascript at bottom of the body tag so the rest of the page loads first
     jsLoader _ = BottomOfBody
+
+needsAuth :: YesodAuth m => t -> GHandler s m AuthResult
+needsAuth _ = maybe AuthenticationRequired (const Authorized) <$> maybeAuthId
 
 -- How to run database actions.
 instance YesodPersist Milagos where
