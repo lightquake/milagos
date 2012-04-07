@@ -15,22 +15,22 @@ getRootR :: Handler RepHtml
 getRootR = do
   postEnts <- runDB $ selectList [] [Desc PostId]
   posts <- mapM postWidget postEnts
-  defaultLayout $ do
+  blogLayout $ do
     setTitle "Home"
-    $(widgetFile "postList")
+    $(widgetFile "post-list")
 
 getTagR :: Text -> Handler RepHtml
 getTagR tagText = do
   postEnts <- runDB $ postsWithTag tagText
   posts <- mapM postWidget postEnts
-  defaultLayout $ do
+  blogLayout $ do
     setTitle $ toHtml tagText
-    $(widgetFile "postList")
+    $(widgetFile "post-list")
 
 getPostR :: PostId -> Handler RepHtml
 getPostR postId = do
   postVal <- runDB $ get404 postId
   posts <- (:[]) <$> postWidget (Entity postId postVal)
-  defaultLayout $ do
+  blogLayout $ do
     setTitle $ toHtml . postTitle $ postVal
-    $(widgetFile "postList")
+    $(widgetFile "post-list")

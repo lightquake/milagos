@@ -1,0 +1,5 @@
+div.sidebar-tag-list {
+    .tag {
+	padding: 4px;
+    }
+}

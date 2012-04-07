@@ -85,9 +85,6 @@ instance Yesod Milagos where
     encryptKey _ = fmap Just $ getKey "config/client_session_key.aes"
 
     defaultLayout widget = do
-        master <- getYesod
-        mmsg <- getMessage
-        let blogTitle = extraTitle . appExtra . settings $ master
         -- We break up the default layout into two components:
         -- default-layout is the contents of the body tag, and
         -- default-layout-wrapper is the entire page. Since the final

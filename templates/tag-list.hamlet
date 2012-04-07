@@ -1,0 +1,7 @@
+<div .sidebar-tag-list>
+  <h2>Tags</h2>
+  $if not (null tags)
+    <span .tag><a href=@{TagR $ head tags}>#{head tags}</a></span>
+    $forall tag <- tail tags
+      \
+      <span .tag><a href=@{TagR tag}>#{tag}</a></span>
