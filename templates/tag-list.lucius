@@ -1,5 +1,19 @@
 div.sidebar-tag-list {
     .tag {
-	padding: 4px;
+	background-color: #E0E0E0;
+	padding: 2px;
+	margin: 2px;
+	line-height: 2.2;
+	border-bottom: 1px solid;
+	border-right: 1px solid;
+	white-space: nowrap;
+
+	a {
+	    color: black;
+	}
+
+	a:hover {
+	    color: #444;
+	}
     }
 }
