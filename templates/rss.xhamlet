@@ -1,0 +1,11 @@
+<channel>
+  <title>#{blogTitle}
+  <link>#{renderer RootR}
+  <description>#{description}
+  <atom:link href=#{renderer RssR} rel=self type=application/rss+xml>
+  $forall postEnt <- posts
+    <item>
+      <title>#{postTitle $ entityVal postEnt}
+      <guid>#{renderer $ PostR (entityKey postEnt)}
+      <link>#{renderer $ PostR (entityKey postEnt)}
+      <description>#{postBody $ entityVal postEnt}

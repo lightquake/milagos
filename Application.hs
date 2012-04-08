@@ -4,26 +4,27 @@ module Application
     , getApplicationDev
     ) where
 
-import Import
-import Settings
-import Yesod.Auth
-import Yesod.Default.Config
-import Yesod.Default.Main
-import Yesod.Default.Handlers
+import           Import
+import           Settings
+import           Yesod.Auth
+import           Yesod.Default.Config
+import           Yesod.Default.Main
+import           Yesod.Default.Handlers
 #if DEVELOPMENT
-import Yesod.Logger (Logger, logBS)
-import Network.Wai.Middleware.RequestLogger (logCallbackDev)
+import           Yesod.Logger (Logger, logBS)
+import           Network.Wai.Middleware.RequestLogger (logCallbackDev)
 #else
-import Yesod.Logger (Logger, logBS, toProduction)
-import Network.Wai.Middleware.RequestLogger (logCallback)
+import           Yesod.Logger (Logger, logBS, toProduction)
+import           Network.Wai.Middleware.RequestLogger (logCallback)
 #endif
 import qualified Database.Persist.Store
-import Database.Persist.GenericSql (runMigration)
-import Network.HTTP.Conduit (newManager, def)
+import           Database.Persist.GenericSql (runMigration)
+import           Network.HTTP.Conduit (newManager, def)
 
 -- Import all relevant handler modules here.
-import Handler.Root
-import Handler.Admin
+import           Handler.Admin
+import           Handler.Root
+import           Handler.Rss
 
 -- This line actually creates our YesodSite instance. It is the second half
 -- of the call to mkYesodData which occurs in Foundation.hs. Please see

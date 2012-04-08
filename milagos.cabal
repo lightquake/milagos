@@ -37,6 +37,7 @@ library
                      Handler.Root
                      Handler.Admin
                      Handler.Renderers
+                     Handler.Rss
                      Types
 
 
@@ -107,3 +108,5 @@ executable         milagos
                  , bcrypt                        >= 0.0.3
                  , transformers
                  , blaze-html                    == 0.4.*
+                 , xml-hamlet                    == 0.3.*
+                 , xml-conduit                   == 0.5.*
