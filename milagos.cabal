@@ -81,6 +81,7 @@ executable         milagos
                 GeneralizedNewtypeDeriving
                 FlexibleContexts
                 EmptyDataDecls
+                NamedFieldPuns
 
     build-depends: base                          >= 4          && < 5
                  , yesod                         >= 0.10       && < 0.11
@@ -108,5 +109,6 @@ executable         milagos
                  , bcrypt                        >= 0.0.3
                  , transformers
                  , blaze-html                    == 0.4.*
-                 , xml-hamlet                    == 0.3.*
+                 , xml-hamlet                    == 0.2.*
                  , xml-conduit                   == 0.5.*
+                 , yesod-paginator               == 0.3.*

@@ -1,8 +1,9 @@
 module Handler.Root where
 
-import           Control.Monad
-import           Handler.Renderers
-import           Import
+import Control.Monad
+import Handler.Renderers
+import Import
+import Yesod.Paginator
 
 -- This is a handler function for the GET request method on the RootR
 -- resource pattern. All of your resource patterns are defined in
@@ -13,19 +14,21 @@ import           Import
 -- inclined, or create a single monolithic file.
 getRootR :: Handler RepHtml
 getRootR = do
-  postEnts <- runDB $ selectList [] [Desc PostId]
+  (postEnts, widget) <- runDB $ selectPaginated pageWidget 6 [] [Desc PostId]
   posts <- mapM postWidget postEnts
   blogLayout $ do
     setTitle "Home"
     $(widgetFile "post-list")
+    widget
 
 getTagR :: Text -> Handler RepHtml
 getTagR tagText = do
-  postEnts <- runDB $ postsWithTag tagText
+  (postEnts, widget) <- (runDB $ postsWithTag tagText) >>= paginate pageWidget 6
   posts <- mapM postWidget postEnts
   blogLayout $ do
     setTitle $ toHtml tagText
     $(widgetFile "post-list")
+    widget
 
 getPostR :: PostId -> Handler RepHtml
 getPostR postId = do
