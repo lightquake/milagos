@@ -44,4 +44,4 @@ authPassword valid = AuthPlugin authName dispatch $ form
   where dispatch "POST" ["login"] = postLoginR valid >>= sendResponse
         dispatch _ _              = notFound
         form :: (Route Auth -> Route m) -> GWidget sub m ()
-        form th = addHamlet $(hamletFile "templates/login.hamlet")
+        form th = toWidget $(hamletFile "templates/login.hamlet")

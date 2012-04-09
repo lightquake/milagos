@@ -18,9 +18,9 @@ postForm postf = renderDivs $ PostF
 
 getAdminR :: Handler RepHtml
 getAdminR = do
-  ((_, widget), enctype) <- generateFormPost $ postForm Nothing
+  (widget, enctype) <- generateFormPost $ postForm Nothing
   defaultLayout [whamlet|
- <form action=@{AdminR} method=post enctype=#{enctype}
+<form action=@{AdminR} method=post enctype=#{enctype}>
     ^{widget}
     <input type=submit>
 |]
@@ -41,9 +41,9 @@ postAdminR = do
 getEditPostR :: PostId -> Handler RepHtml
 getEditPostR postId = do
   postF <- runDB $ mkPostF postId
-  ((_, widget), enctype) <- generateFormPost . postForm $ Just postF
+  (widget, enctype) <- generateFormPost . postForm $ Just postF
   defaultLayout [whamlet|
- <form action=@{EditPostR postId} method=post enctype=#{enctype}
+ <form action=@{EditPostR postId} method=post enctype=#{enctype}>
     ^{widget}
     <input type=submit>
 |]
@@ -66,10 +66,11 @@ postEditPostR postId = do
 -- A field for a list of tags, which are comma-separated.
 tagListField :: Field sub master [Text]
 tagListField = Field {
-    fieldParse = \vals -> return . Right . Just . filter (not . T.null) . map T.strip $ vals >>= T.splitOn ","
-  , fieldView = \idAttr nameAttr theClass result _ -> [whamlet|
-<input id=#{idAttr} name=#{nameAttr} :not (null theClass):class="#{T.intercalate " " theClass}" type=text value=#{either (const "") (T.intercalate ", ") result}>
+    fieldParse = return . Right . Just . splitTagString
+  , fieldView = \idAttr nameAttr attrs result _ -> [whamlet|
+<input id=#{idAttr} name=#{nameAttr} *{attrs} type=text value=#{either (const "") (T.intercalate ", ") result}>
 |] }
+  where splitTagString vals = filter (not . T.null) . map T.strip $ vals >>= T.splitOn ","
 
 -- | Given a list of Texts that correspond to tag names, return the
 -- Keys for the corresponding tags. Creates the tags if necessary.

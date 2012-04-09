@@ -8,7 +8,7 @@ import Prelude
 
 data FullPostGeneric backend = FullPost { fpPost :: PostGeneric backend
                                         , fpTags :: [TagGeneric backend]
-                                        } deriving Show
+                                        }
 
 -- | Map a Post entity to its list of Tag entities
 tagsFor :: PersistQuery backend m => Entity (PostGeneric backend) -> backend m [Entity (TagGeneric backend)]

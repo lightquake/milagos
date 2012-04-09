@@ -23,11 +23,9 @@ import           Yesod.Auth
 import           Yesod.Default.Config
 import           Yesod.Default.Util (addStaticContentExternal)
 import           Yesod.Logger (logMsg, formatLogText)
-#ifdef DEVELOPMENT
-import           Yesod.Logger (logLazyText)
-#endif
+
 import qualified Settings
-import qualified Data.ByteString.Lazy as L
+
 import qualified Database.Persist.Store
 import           Database.Persist.GenericSql
 import           Settings (widgetFile, Extra (..))
@@ -35,11 +33,6 @@ import           Model
 import           Text.Jasmine (minifym)
 import           Web.ClientSession (getKey)
 import           Text.Hamlet (hamletFile)
-#if DEVELOPMENT
-import qualified Data.Text.Lazy.Encoding
-#else
-import           Network.Mail.Mime (sendmail)
-#endif
 
 import           Data.Text (Text)
 import           Model.PasswordAuth
@@ -81,8 +74,9 @@ type Form x = Html -> MForm Milagos Milagos (FormResult x, Widget)
 instance Yesod Milagos where
     approot = ApprootMaster $ appRoot . settings
 
-    -- Place the session key file in the config folder
-    encryptKey _ = fmap Just $ getKey "config/client_session_key.aes"
+    makeSessionBackend _ = do
+        key <- getKey "config/client_session_key.aes"
+        return . Just $ clientSessionBackend key 120
 
     defaultLayout widget = do
         -- We break up the default layout into two components:
@@ -153,14 +147,6 @@ instance YesodAuth Milagos where
       [authPassword (extraPassword . appExtra . settings $ app)]
 
     authHttpManager = httpManager
-
--- Sends off your mail. Requires sendmail in production!
-deliver :: Milagos -> L.ByteString -> IO ()
-#ifdef DEVELOPMENT
-deliver y = logLazyText (getLogger y) . Data.Text.Lazy.Encoding.decodeUtf8
-#else
-deliver _ = sendmail
-#endif
 
 -- This instance is required to use forms. You can modify renderMessage to
 -- achieve customized and internationalized form validation messages.

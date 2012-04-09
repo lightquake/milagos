@@ -1,4 +1,4 @@
 <div .navigation>
-  $if page < pages
+  $if showNext
     <div .next>^{nextPage}
   <div .prev>^{prevPage}
