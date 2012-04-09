@@ -35,13 +35,7 @@ pageWidget page perPage total =
   -- total number of pages is total / per + 1 (or + 0 if it's an even
   -- division)
   let pages = (\(n, r) -> n + min r 1) $ total `divMod` perPage in
-    when (pages > 1) $ do
-      [whamlet|
-<div .navigation>
-  <div .prev>^{prevPage}
-  $if page < pages
-    <div .next>^{nextPage}
-|]
+    when (pages > 1) $(widgetFile "navigation")
 
 -- | A widget that links to the previous page. Is invisible if the
 -- current page is not at least 1.

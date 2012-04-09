@@ -1,0 +1,11 @@
+div.navigation {
+    margin: 20px;
+
+    .prev {
+	float: right;
+    }
+
+    .next {
+	float: left;
+    }
+}
