@@ -4,13 +4,13 @@ license:           BSD3
 license-file:      LICENSE
 author:            Patrick Hurst
 maintainer:        Patrick Hurst
-synopsis:          The greatest Yesod web application ever.
-description:       I'm sure you can say something clever here if you try.
+synopsis:          A simple blog engine.
+description:       Milagos is a simple blog engine that will eventually support features like theming and plugins without a GHC install (although full functionality will naturally require it due to limits inherent in plugin-type systems).
 category:          Web
 stability:         Experimental
 cabal-version:     >= 1.6
 build-type:        Simple
-homepage:          http://milagos.yesodweb.com/
+homepage:          http://milagos.amateurtopologist.com/
 
 Flag dev
     Description:   Turn on development settings, like auto-reload templates.
