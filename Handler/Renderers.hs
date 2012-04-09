@@ -30,7 +30,7 @@ blogLayout widget = do
 -- Stuff for previous/next page links.
 -----------------------------------------------
 
-pageWidget :: Int -> Int -> Int -> GWidget master master ()
+pageWidget :: Int -> Int -> Int -> GWidget sub master ()
 pageWidget page perPage total =
   -- total number of pages is total / per + 1 (or + 0 if it's an even
   -- division)
@@ -39,7 +39,7 @@ pageWidget page perPage total =
 
 -- | A widget that links to the previous page. Is invisible if the
 -- current page is not at least 1.
-prevPage :: GWidget master master ()
+prevPage :: GWidget sub master ()
 prevPage = do
   page <- lift $ getCurrentPage
   prevUrl <- lift $ setParam "p" (T.pack . show $ page - 1)
@@ -47,17 +47,18 @@ prevPage = do
 
 -- | A widget that links to the next page. Is invisible if the current
 -- page is negative (invalid).
-nextPage :: GWidget master master ()
+nextPage :: GWidget sub master ()
 nextPage = do
   page <- lift $ getCurrentPage
   prevUrl <- lift $ setParam "p" (T.pack . show $ page + 1)
   when (page > 0) [whamlet|<a href=#{prevUrl}>Older</a>|]
 
 
-setParam :: Text -> Text -> GHandler m m Text
+setParam :: Text -> Text -> GHandler sub master Text
 setParam k v = do
   renderer' <- getUrlRenderParams
-  route <- getCurrentRoute
+  rtm <- getRouteToMaster
+  route <- liftM rtm <$> getCurrentRoute
   let renderer = renderer' (fromJust route)
   params <- reqGetParams <$> getRequest
   return . renderer $ (k, v) : (filter ((/=) k . fst) params)
