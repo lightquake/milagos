@@ -28,16 +28,17 @@ library
 
     exposed-modules: Application
     other-modules:   Foundation
-                     Import
-                     Model
-                     Model.Post
-                     Model.PasswordAuth
-                     Settings
-                     Settings.StaticFiles
                      Handler.Root
                      Handler.Admin
                      Handler.Renderers
                      Handler.Rss
+                     Import
+                     Model
+                     Model.PasswordAuth
+                     Model.Post
+                     Model.Tag
+                     Settings
+                     Settings.StaticFiles
                      Types
 
 

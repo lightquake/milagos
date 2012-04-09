@@ -11,13 +11,13 @@ import           Yesod.Default.Config
 postWidget :: Entity Post -> Handler Widget
 postWidget postEnt = do
   let Entity postKey post = postEnt
-  tags <- runDB (map (tagName . entityVal) <$> tagsFor postEnt)
+  tags <- runDB $ map (tagName . entityVal) <$> tagsFor postEnt
   authorized <- (== Authorized) <$> isAuthorized (EditPostR postKey) True
   return $(widgetFile "post")
 
 tagListWidget :: Widget
 tagListWidget = do
-  tags <- lift . runDB $ (map (tagName . entityVal) <$> selectList [] [Asc TagName])
+  tags <- lift . runDB $ map (tagName . entityVal) <$> tagsInUse
   $(widgetFile "tag-list")
 
 blogLayout :: Widget -> Handler RepHtml

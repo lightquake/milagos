@@ -1,10 +1,10 @@
 module Model.Post where
 
-import           Data.Text (Text)
-import           Database.Persist
-import           Database.Persist.Query.Join
-import           Model
-import           Prelude
+import Data.Text (Text)
+import Database.Persist
+import Database.Persist.Query.Join
+import Model
+import Prelude
 
 data FullPostGeneric backend = FullPost { fpPost :: PostGeneric backend
                                         , fpTags :: [TagGeneric backend]
