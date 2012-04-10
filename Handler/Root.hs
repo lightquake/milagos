@@ -17,7 +17,7 @@ getRootR = do
   (postEnts, widget) <- runDB $ selectPaginated pageWidget 6 [] [Desc PostId]
   posts <- mapM postWidget postEnts
   blogLayout $ do
-    setTitle "Home"
+    setTitle ""
     $(widgetFile "post-list")
     widget
 

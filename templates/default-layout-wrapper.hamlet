@@ -3,9 +3,10 @@
     <head>
         <meta charset="UTF-8">
 
-        <title>#{pageTitle pc}
-        <meta name="description" content="">
-        <meta name="author" content="">
+        <title>
+          $if not $ isEmptyHtml $ pageTitle pc
+            #{pageTitle pc} | #
+          #{blogTitle}
         <link rel=alternate type=application/rss+xml href=@{RssR}>
         <meta name="viewport" content="width=device-width,initial-scale=1">
 
@@ -14,9 +15,6 @@
         \<!--[if lt IE 9]>
         \<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         \<![endif]-->
-
-        <script>
-          document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/,'js');
     <body>
         <div id="container">
             <header>

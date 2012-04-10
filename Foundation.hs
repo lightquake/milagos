@@ -17,22 +17,23 @@ import           Prelude
 
 import           Control.Applicative ((<$>))
 
+import qualified Data.Text as T
+import qualified Settings
 import           Yesod
-import           Yesod.Static
 import           Yesod.Auth
 import           Yesod.Default.Config
 import           Yesod.Default.Util (addStaticContentExternal)
 import           Yesod.Logger (logMsg, formatLogText)
+import           Yesod.Static
 
-import qualified Settings
-
-import qualified Database.Persist.Store
 import           Database.Persist.GenericSql
-import           Settings (widgetFile, Extra (..))
+import qualified Database.Persist.Store
 import           Model
+import           Settings (widgetFile, Extra (..))
+import           Text.Blaze.Renderer.Text (renderHtml)
+import           Text.Hamlet (hamletFile)
 import           Text.Jasmine (minifym)
 import           Web.ClientSession (getKey)
-import           Text.Hamlet (hamletFile)
 
 import           Data.Text (Text)
 import           Model.PasswordAuth
@@ -84,7 +85,7 @@ instance Yesod Milagos where
         -- default-layout-wrapper is the entire page. Since the final
         -- value passed to hamletToRepHtml cannot be a widget, this allows
         -- you to use normal widget features in default-layout.
-
+        blogTitle <- extraTitle . appExtra . settings <$> getYesod
         pc <- widgetToPageContent $ do
             $(widgetFile "normalize")
             $(widgetFile "default-layout")
@@ -152,3 +153,6 @@ instance YesodAuth Milagos where
 -- achieve customized and internationalized form validation messages.
 instance RenderMessage Milagos FormMessage where
     renderMessage _ _ = defaultFormMessage
+
+isEmptyHtml :: Html -> Bool
+isEmptyHtml = (== "") . renderHtml
