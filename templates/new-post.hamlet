@@ -1,0 +1,17 @@
+#{extra}
+<div .row>
+  <div .control-group>
+    <label .control-label>Title
+    <div .controls>
+      ^{fvInput titleView}
+  <hr>
+  <div .control-group>
+    <label .control-label>Body
+    <div .controls>
+      ^{fvInput bodyView}
+  <div .control-group>
+    <label .control-label>Tags
+    <div .controls>
+      ^{fvInput tagView}
+  <div .form-actions>
+    <button .btn .btn-primary type=submit>Submit

@@ -100,7 +100,7 @@ instance Yesod Milagos where
     authRoute _ = Just $ AuthR LoginR
 
     -- /admin requires authorization
-    isAuthorized AdminR = needsAuth
+    isAuthorized NewPostR = needsAuth
     isAuthorized (EditPostR _) = needsAuth
     isAuthorized _ = const $ return Authorized
 

@@ -27,6 +27,13 @@ blogLayout widget = do
   let blogTitle = extraTitle . appExtra . settings $ master
   defaultLayout $(widgetFile "blog-layout")
 
+adminLayout :: Widget -> Handler RepHtml
+adminLayout widget =
+  defaultLayout $ do
+    addStylesheet . StaticR $ StaticRoute ["css", "bootstrap.css"] []
+    $(widgetFile "admin-layout")
+
+
 -- Stuff for previous/next page links.
 -----------------------------------------------
 

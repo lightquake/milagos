@@ -1,7 +1,8 @@
 module Handler.Admin where
 
-import Import
 import qualified Data.Text as T
+import           Handler.Renderers
+import           Import
 
 data PostF = PostF {
     title :: Text
@@ -10,23 +11,26 @@ data PostF = PostF {
   } deriving Show
 
 postForm :: Maybe PostF -> Form PostF
-postForm postf = renderDivs $ PostF
-           <$> areq textField "Title" (title <$> postf)
-           <*> unTextarea `fmap` areq textareaField "Body" (Textarea . body <$> postf)
-           <*> areq tagListField "Tags" (tags <$> postf)
+postForm postf extra = do
+  (titleRes, titleView) <- makeField textField title ["input-xlarge"]
+  (bodyRes, bodyView) <- makeField textareaField (Textarea . body) ["span9"]
+  (tagRes, tagView) <- makeField tagListField tags ["span3"]
+  let postRes = PostF <$> titleRes <*> unTextarea `fmap` bodyRes <*> tagRes
+  return (postRes, toWidget $(widgetFile "new-post"))
+  where
+    makeField :: Field Milagos Milagos a -> (PostF -> a) -> [Text]
+                 -> MForm Milagos Milagos (FormResult a, FieldView Milagos Milagos)
+    makeField field getter classes = mreq field settings (getter <$> postf)
+      where settings = "" {
+            fsAttrs = [("class", T.intercalate " " classes)]
+       }
 
 
-getAdminR :: Handler RepHtml
-getAdminR = do
-  (widget, enctype) <- generateFormPost $ postForm Nothing
-  defaultLayout [whamlet|
-<form action=@{AdminR} method=post enctype=#{enctype}>
-    ^{widget}
-    <input type=submit>
-|]
+getNewPostR :: Handler RepHtml
+getNewPostR = postR Nothing
 
-postAdminR :: Handler RepHtml
-postAdminR = do
+postNewPostR :: Handler RepHtml
+postNewPostR = do
   result <- fst . fst <$> runFormPost (postForm Nothing)
   case result of
     FormSuccess postf -> do
@@ -36,17 +40,10 @@ postAdminR = do
         tagKeys <- loadTagKeys $ tags postf
         mapM (insert . PostTag postId) tagKeys
       redirect RootR
-    _ -> redirect AdminR
+    _ -> redirect NewPostR
 
 getEditPostR :: PostId -> Handler RepHtml
-getEditPostR postId = do
-  postF <- runDB $ mkPostF postId
-  (widget, enctype) <- generateFormPost . postForm $ Just postF
-  defaultLayout [whamlet|
- <form action=@{EditPostR postId} method=post enctype=#{enctype}>
-    ^{widget}
-    <input type=submit>
-|]
+getEditPostR = postR . Just
 
 postEditPostR :: PostId -> Handler RepHtml
 postEditPostR postId = do
@@ -62,6 +59,22 @@ postEditPostR postId = do
 
       redirect $ PostR postId
     _ -> redirect $ EditPostR postId
+
+postR :: Maybe PostId -> Handler RepHtml
+postR maybePostId = do
+  postF <- maybe (return Nothing) (fmap Just . runDB . mkPostF) maybePostId
+  (widget, enctype) <- generateFormPost . postForm $ postF
+  let action = maybe NewPostR EditPostR maybePostId
+  adminLayout [whamlet|
+<div .row>
+  <div .span12>
+    <form action=@{action} method=post enctype=#{enctype}>
+      ^{widget}
+|]
+
+-- Utility funnctions
+-----------------------------------------------------
+
 
 -- A field for a list of tags, which are comma-separated.
 tagListField :: Field sub master [Text]

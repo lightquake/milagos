@@ -5,7 +5,7 @@
 /robots.txt RobotsR GET
 
 / RootR GET
-/admin AdminR GET POST
+/admin NewPostR GET POST
 /tag/#Text TagR GET
 /post/#PostId PostR GET
 /admin/edit/#PostId EditPostR GET POST
