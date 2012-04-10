@@ -1,25 +1,25 @@
 div.content {
     margin-left: auto;
     margin-right: auto;
-    width: 960px;
+    max-width: 1200px;
 
     div#left-column {
 	float: left;
-	width: 600px;
-	padding-top: 10px;
+	width: 60%;
+	margin: 20px 10px 20px 30px;
     }
 
     div#right-column {
 	float: right;
-	width: 300px;
-	padding-top: 0px;
+	width: 30%;
+	margin: 20px 30px 20px 10px;
     }
 }
 
 
 div#header #title {
-    padding-top: 40px;
-    padding-bottom: 60px;
+    margin-top: 40px;
+    margin-bottom: 40px;
     text-align: center;
     font-size: 36px;
     font-weight: bold;
