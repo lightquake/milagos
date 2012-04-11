@@ -1,0 +1,72 @@
+diff --git a/Yesod/Paginator.hs b/Yesod/Paginator.hs
+index a45ffe2..ce8070a 100644
+--- a/Yesod/Paginator.hs
++++ b/Yesod/Paginator.hs
+@@ -5,7 +5,7 @@
+ -------------------------------------------------------------------------------
+ -- |
+ --
+--- Inspiration from a concept by ajdunlap: 
++-- Inspiration from a concept by ajdunlap:
+ --      <http://hackage.haskell.org/package/yesod-paginate>
+ --
+ -- But uses an entirely different approach.
+@@ -58,23 +58,26 @@ import Yesod
+ import Yesod.Paginator.Widget
+ import Control.Monad.Trans.Class (MonadTrans)
+ 
+-paginate :: Int -> [a] -> GHandler s m ([a], GWidget s m ())
+-paginate per items = do
++paginate :: (Int -> Int -> Int -> GWidget s m ()) -> Int -> [a] -> GHandler s m ([a], GWidget s m ())
++paginate widget per items = do
+     p <- getCurrentPage
+ 
+     let tot = length items
+     let  xs = take per $ drop ((p - 1) * per) items
+ 
+-    return (xs, paginationWidget p per tot)
++    return (xs, widget p per tot)
+ 
+-selectPaginated :: ( MonadTrans (PersistEntityBackend v)
+-                   , PersistEntity v
+-                   , PersistQuery (PersistEntityBackend v) (GHandler s m))
+-                => Int -> [Filter v] -> [SelectOpt v]
+-                -> PersistEntityBackend v (GHandler s m) ([Entity v], GWidget s1 m1 ())
+-selectPaginated per filters selectOpts = do
++selectPaginated :: (PersistEntity val,
++                    PersistQuery (PersistEntityBackend val) (GHandler s m),
++                    MonadTrans (PersistEntityBackend val)) =>
++       (Int -> Int -> Int -> GWidget s m ())
++       -> Int
++       -> [Filter val]
++       -> [SelectOpt val]
++       -> PersistEntityBackend val (GHandler s m) ([Entity val], GWidget s m ())
++selectPaginated widget per filters selectOpts = do
+     p   <- lift getCurrentPage
+     tot <- count filters
+     xs  <- selectList filters (selectOpts ++ [OffsetBy ((p-1)*per), LimitTo per])
+ 
+-    return (xs, paginationWidget p per tot)
++    return (xs, widget p per tot)
+diff --git a/yesod-paginator.cabal b/yesod-paginator.cabal
+index ea35ca7..d906708 100644
+--- a/yesod-paginator.cabal
++++ b/yesod-paginator.cabal
+@@ -1,5 +1,5 @@
+ name:                yesod-paginator
+-version:             0.2.2.1
++version:             0.2.2
+ synopsis:            A pagination approach for yesod
+ description:         Paginate a list showing a per-item widget and links to other pages
+ homepage:            http://github.com/pbrisbin/yesod-paginator
+@@ -17,8 +17,8 @@ library
+ 
+   build-depends: base       >= 4    && < 5
+                , text       >= 0.11 && < 0.12
+-               , yesod      >= 0.10 && < 0.11
+-               , persistent >= 0.8  && < 0.9
++               , yesod      >= 1.0  && < 1.1
++               , persistent >= 0.9  && < 0.10
+                , transformers
+ 
+   ghc-options: -Wall

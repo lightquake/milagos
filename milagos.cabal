@@ -114,6 +114,6 @@ executable         milagos
                  , blaze-html                    == 0.4.*
                  , xml-hamlet                    == 0.3.*
                  , xml-conduit                   == 0.7.*
-                 , yesod-paginator               == 0.3.*
+                 , yesod-paginator               >= 0.2.2
                  , time
                  , old-locale
