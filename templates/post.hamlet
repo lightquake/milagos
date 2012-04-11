@@ -1,10 +1,11 @@
-<h1>
-  <a .title href=@{PostR postKey}>#{postTitle post}
-<div>#{preEscapedText $ postBody post}
-$if not (null tags)
-  <div>Tagged: #
-    <a href=@{TagR $ head tags}>#{head tags}
-    $forall tag <- tail tags
-      , <a href=@{TagR tag}>#{tag}</a>
-    $if authorized
-     \ / <a href=@{EditPostR postKey}>Edit Post</a>
+<div .title .shadowed>
+    <a .title href=@{PostR postKey}>#{postTitle post}
+<div .shadowed>
+  <div .content>#{preEscapedText $ postBody post}
+  $if not (null tags)
+     <div .tags .noise>Tagged: #
+      <a href=@{TagR $ head tags}>#{head tags}
+      $forall tag <- tail tags
+        , <a href=@{TagR tag}>#{tag}</a>
+      $if authorized
+       \ / <a href=@{EditPostR postKey}>Edit Post</a>

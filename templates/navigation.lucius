@@ -1,8 +1,15 @@
 div.navigation {
-    margin: 20px;
-
+    padding-bottom: 40px;
+    padding-top: 30px;
     .prev {
 	float: right;
+    }
+
+    a {
+    background: white;
+    padding: 6px;
+    border: 1px solid black;
+    margin: 6px;
     }
 
     .next {

@@ -1,11 +1,13 @@
-<div .content>
-  <div #header>
-    <div #title>
-      <a .title href=@{RootR}>#{blogTitle}
+<div #header .noise>
+  <div #title>
+    <a .title href=@{RootR}>#{blogTitle}
 
-  $maybe msg <- mmsg
-    <div #message>#{msg}
-  <div #left-column>
-    ^{widget}
-  <div #right-column>
-    ^{tagListWidget}
+
+<div #wrapper>
+  <div #content>
+    $maybe msg <- mmsg
+      <div #message>#{msg}
+    <div #left-column .column>
+      ^{widget}
+    <div #right-column .column>
+      ^{tagListWidget}

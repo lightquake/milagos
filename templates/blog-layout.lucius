@@ -1,33 +1,92 @@
-div.content {
+@outerBorder: 1px solid black;
+@innerBorder: 0px solid black;
+@bgColor: rgb(52, 129, 130);
+@bodyColor: rgb(245, 245, 245);
+@fadeColor: black;
+
+
+div#wrapper {
+    /* wrapper shadow should always be on the bottom */
+    position: relative
+    z-index: -1000;
+
+    background: -moz-linear-gradient(top,  rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.65)), color-stop(100%,rgba(0,0,0,0))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* IE10+ */
+    background: linear-gradient(top,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
+    background-size: 100% 100px;
+    background-repeat: no-repeat;
+}
+
+
+div#content {
     margin-left: auto;
     margin-right: auto;
     max-width: 1200px;
-
     div#left-column {
 	float: left;
 	width: 60%;
-	margin: 20px 10px 20px 30px;
+	padding-top: 20px;
+	padding-right: 20px;
+	padding-left: 20px;
     }
 
     div#right-column {
 	float: right;
 	width: 30%;
-	margin: 20px 30px 20px 10px;
+	padding-top: 90px;
+	padding-right: 30px;
+	padding-left: 30px;
+    }
+    margin-bottom: 60px;
+}
+
+/* hack to make left and right columns same height */
+#content {
+    overflow: hidden;
+
+    .column {
+	paddingBottom: 200020px;
+	marginBottom: -200000px;
     }
 }
 
 
-div#header #title {
-    margin-top: 40px;
-    margin-bottom: 40px;
+div#header {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-bottom: #{outerBorder};
     text-align: center;
-    font-size: 36px;
+    font-size: 48px;
     font-weight: bold;
     font-variant: small-caps;
+    background: #{bgColor};
+    color: white;
 }
 
 body {
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: Helvetiva, Arial, sans-serif;
+    background:
+    radial-gradient(black 15%, transparent 16%) 0 0,
+    radial-gradient(black 15%, transparent 16%) 4px 4px,
+    radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
+    radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 4px 5px;
+    background:
+    -moz-radial-gradient(black 15%, transparent 16%) 0 0,
+    -moz-radial-gradient(black 15%, transparent 16%) 4px 4px,
+    -moz-radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
+    -moz-radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 4px 5px;
+    background:
+    -webkit-radial-gradient(black 15%, transparent 16%) 0 0,
+    -webkit-radial-gradient(black 15%, transparent 16%) 4px 4px,
+    -webkit-radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
+    -webkit-radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 4px 5px;
+    background-color:#282828;
+    background-attachment: fixed;
+    background-size:8px 8px;
 }
 
 a {
@@ -40,5 +99,60 @@ a.title {
 }
 
 a.title:hover {
-    color: #444;
+    color: #BBB;
+}
+
+@shadow: 5px 5px 2px black;
+
+.shadowed {
+   -moz-box-shadow: #{shadow};
+   -webkit-box-shadow: #{shadow};
+   box-shadow: #{shadow};
+}
+
+div.post {
+
+    clear: both;
+    color: white;
+    padding: 1px 0px 0px 0px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    height: auto;
+    div.title {
+	display: inline-block;
+	position: relative;
+	box-shadow: 5px 5px 2px black;
+	padding: 5px 10px;
+	font-size: 200%;
+	border-top: #{outerBorder};
+	border-left: #{outerBorder};
+	border-right: #{outerBorder};
+	border-bottom: #{innerBorder};
+	background: #{bgColor};
+    }
+    .content {
+	position: relative;
+	z-index: 1;
+	font-family: Georgia, serif;
+	background: white;
+	border: #{outerBorder};
+	color: black;
+	padding: 8px 15px;
+    }
+    .tags {
+	margin-top: -2px;
+	border-left: #{outerBorder};
+	border-right: #{outerBorder};
+	border-bottom: #{outerBorder};
+	border-top: #{innerBorder};
+	padding: 4px 8px;
+	text-align: right;
+	background: #{bgColor};
+	a {
+	    color: white;
+	}
+	a:hover {
+	    color: #BBB;
+	}
+    }
 }

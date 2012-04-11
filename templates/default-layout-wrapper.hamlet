@@ -15,7 +15,7 @@
         \<!--[if lt IE 9]>
         \<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         \<![endif]-->
-    <body>
+    <body .body-noise>
         <div id="container">
             <header>
             <div id="main" role="main">
