@@ -85,6 +85,7 @@ instance Yesod Milagos where
         -- value passed to hamletToRepHtml cannot be a widget, this allows
         -- you to use normal widget features in default-layout.
         blogTitle <- extraTitle . appExtra . settings <$> getYesod
+
         pc <- widgetToPageContent $ do
             $(widgetFile "normalize")
             $(widgetFile "default-layout")

@@ -26,9 +26,10 @@ tagListWidget = do
 
 blogLayout :: Widget -> Handler RepHtml
 blogLayout widget = do
-  master <- getYesod
+  ae <- appExtra . settings <$> getYesod
   mmsg <- getMessage
-  let blogTitle = extraTitle . appExtra . settings $ master
+  let blogTitle = extraTitle ae
+      mAnalytics = extraAnalytics ae
   defaultLayout $(widgetFile "blog-layout")
 
 adminLayout :: Widget -> Handler RepHtml

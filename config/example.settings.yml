@@ -6,6 +6,7 @@ Default: &defaults
   # your password, and set that as the value of this setting.
   password: "$2y$04$qUnEydfVutlHEswigzGTsutiD2ZSfuxk6uJmhm3zf0upZE2bASxrW"
   title: "Milagos Development"
+  #analytics: UA-12345678-9
 
 Development:
   <<: *defaults
