@@ -1,2 +1,5 @@
+<script type=text/javascript src=/static/js/tiny_mce/tiny_mce.js>
+<script type=text/javascript>
+  tinyMCE.init({mode: "textareas", theme:"advanced", theme_advanced_toolbar_location: "top"})
 <div .container>
   ^{widget}

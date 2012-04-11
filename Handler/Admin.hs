@@ -1,21 +1,30 @@
 module Handler.Admin where
 
 import qualified Data.Text as T
+import qualified Data.Text.Lazy as L
 import           Handler.Renderers
 import           Import
+import           Text.Blaze.Renderer.Text
 
 data PostF = PostF {
     title :: Text
-  , body :: Text
+  , body :: Html
   , tags :: [Text]
-  } deriving Show
+  }
+
+-- Need this because the actual htmlField has a comment in its hamlet.
+htmlField' :: RenderMessage master FormMessage => Field sub master Html
+htmlField' = htmlField { fieldView = \theId name attrs val _isReq -> toWidget [hamlet|
+<textarea id="#{theId}" name="#{name}" *{attrs}>#{showVal val}|]
+                       }
+               where showVal = either id (L.toStrict . renderHtml)
 
 postForm :: Maybe PostF -> Form PostF
 postForm postf extra = do
   (titleRes, titleView) <- makeField textField title ["input-xlarge"]
-  (bodyRes, bodyView) <- makeField textareaField (Textarea . body) ["span9"]
-  (tagRes, tagView) <- makeField tagListField tags ["span3"]
-  let postRes = PostF <$> titleRes <*> unTextarea `fmap` bodyRes <*> tagRes
+  (bodyRes, bodyView) <- makeField htmlField' body ["span12"]
+  (tagRes, tagView) <- makeField tagListField tags ["span6"]
+  let postRes = PostF <$> titleRes <*> bodyRes <*> tagRes
   return (postRes, toWidget $(widgetFile "new-post"))
   where
     makeField :: Field Milagos Milagos a -> (PostF -> a) -> [Text]

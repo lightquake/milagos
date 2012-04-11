@@ -1,6 +1,6 @@
 Post
     title Text
-    body Text
+    body Html
 Tag
     name Text
     UniqueTagName name

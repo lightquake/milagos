@@ -17,7 +17,6 @@ import           Prelude
 
 import           Control.Applicative ((<$>))
 
-import qualified Data.Text as T
 import qualified Settings
 import           Yesod
 import           Yesod.Auth

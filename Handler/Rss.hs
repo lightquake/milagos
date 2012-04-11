@@ -1,7 +1,9 @@
 module Handler.Rss where
 
 import Control.Applicative
+import qualified Data.Text.Lazy as L
 import Import
+import Text.Blaze.Renderer.Text
 import Text.Hamlet.XML
 import Text.XML
 import Yesod.Default.Config

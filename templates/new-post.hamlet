@@ -6,7 +6,6 @@
       ^{fvInput titleView}
   <hr>
   <div .control-group>
-    <label .control-label>Body
     <div .controls>
       ^{fvInput bodyView}
   <div .control-group>

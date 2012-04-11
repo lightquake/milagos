@@ -1,7 +1,7 @@
 <div .title .shadowed>
     <a .title href=@{PostR postKey}>#{postTitle post}
 <div .shadowed>
-  <div .content>#{preEscapedText $ postBody post}
+  <div .content>#{postBody post}
   $if not (null tags)
      <div .tags .noise>Tagged: #
       <a href=@{TagR $ head tags}>#{head tags}

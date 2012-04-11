@@ -5,7 +5,6 @@ import           Data.Maybe
 import qualified Data.Text as T
 import           Import
 import           Prelude (head, tail)
-import           Text.Blaze (preEscapedText)
 import           Yesod.Default.Config
 
 postWidget :: Entity Post -> Handler Widget
