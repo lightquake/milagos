@@ -69,7 +69,10 @@ div#header {
 
 body {
     font-family: Helvetiva, Arial, sans-serif;
-    background-color:#282828;
+    background-color: #282828;
+    background: url('/static/img/tile.png');
+    background-attachment: fixed;
+    background-repeat: repeat;
 }
 
 a {
