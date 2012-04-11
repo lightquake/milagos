@@ -8,6 +8,7 @@ module Import
     , module Types
     , module Model.Post
     , module Model.Tag
+    , module Data.Time.Clock
     , Text
 #if __GLASGOW_HASKELL__ < 740
     , (<>)
@@ -23,6 +24,7 @@ import Model.Tag
 import Prelude hiding (writeFile, readFile, head, tail, init, last)
 import Settings.StaticFiles
 import Types
+import Data.Time.Clock
 import Yesod   hiding (Route(..))
 
 #if __GLASGOW_HASKELL__ < 740

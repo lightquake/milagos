@@ -1,6 +1,7 @@
 Post
     title Text
     body Html
+    posted UTCTime default=current_timestamp
 Tag
     name Text
     UniqueTagName name

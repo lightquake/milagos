@@ -3,14 +3,19 @@ module Handler.Renderers where
 import           Control.Monad
 import           Data.Maybe
 import qualified Data.Text as T
-import           Import
+import           Data.Time
+import           Import hiding (parseTime)
 import           Prelude (head, tail)
+import           System.Locale
 import           Yesod.Default.Config
 
 postWidget :: Entity Post -> Handler Widget
 postWidget postEnt = do
   let Entity postKey post = postEnt
   tags <- runDB $ map (tagName . entityVal) <$> tagsFor postEnt
+  localTime <- liftIO . utcToLocalZonedTime $ postPosted post
+  -- like April 11, 2012
+  let time = formatTime defaultTimeLocale "%B %e, %Y" localTime
   authorized <- (== Authorized) <$> isAuthorized (EditPostR postKey) True
   return $(widgetFile "post")
 

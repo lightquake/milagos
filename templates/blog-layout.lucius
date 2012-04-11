@@ -139,14 +139,13 @@ div.post {
 	color: black;
 	padding: 8px 15px;
     }
-    .tags {
+    .metadata {
 	margin-top: -2px;
 	border-left: #{outerBorder};
 	border-right: #{outerBorder};
 	border-bottom: #{outerBorder};
 	border-top: #{innerBorder};
 	padding: 4px 8px;
-	text-align: right;
 	background: #{bgColor};
 	a {
 	    color: white;
@@ -154,5 +153,12 @@ div.post {
 	a:hover {
 	    color: #BBB;
 	}
+
+        .tags {
+          float: right;
+          display: inline;
+          max-width: 60%;
+          text-align: right;
+        }
     }
 }

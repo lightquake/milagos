@@ -1,5 +1,7 @@
 module Handler.Admin where
 
+import           Control.Monad.IO.Class (MonadIO)
+import           Control.Monad
 import qualified Data.Text as T
 import qualified Data.Text.Lazy as L
 import           Handler.Renderers
@@ -44,7 +46,8 @@ postNewPostR = do
   case result of
     FormSuccess postf -> do
       _ <- runDB $ do
-        postId <- insert $ mkPost postf
+        post <- mkPost postf
+        postId <- insert post
         -- get the keys and insert into the PostTag many-many table
         tagKeys <- loadTagKeys $ tags postf
         mapM (insert . PostTag postId) tagKeys
@@ -60,7 +63,10 @@ postEditPostR postId = do
   case newPost of
     FormSuccess postf -> do
       _ <- runDB $ do
-        replace postId . mkPost $ postf
+        -- preserve the time posted so edits don't pop up top
+        oldTime <- postPosted <$> get404 postId
+        post <- mkPost postf
+        replace postId $ post { postPosted = oldTime }
         -- out with the old tags, in with the new ones
         tagKeys <- loadTagKeys $ tags postf
         deleteWhere [PostTagPostId ==. postId]
@@ -111,5 +117,5 @@ mkPostF postId = do
   tagNames <- map (tagName . entityVal) <$> tagsFor postEnt
   return $ PostF (postTitle postVal) (postBody postVal) tagNames
 
-mkPost :: PostF -> Post
-mkPost (PostF {title, body}) = Post title body
+mkPost :: MonadIO m => PostF -> m Post
+mkPost (PostF {title, body}) = liftIO (Post title body <$> getCurrentTime)
