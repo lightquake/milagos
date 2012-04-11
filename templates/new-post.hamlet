@@ -12,5 +12,7 @@
     <label .control-label>Tags
     <div .controls>
       ^{fvInput tagView}
-  <div .form-actions>
-    <button .btn .btn-primary type=submit>Submit
+  <fieldset>
+    <div .form-actions>
+      <button .btn .btn-primary type=submit name=submit>Submit
+      <button .btn .btn-danger type=submit name=delete value=yes style="float: right">Delete

@@ -1,7 +1,8 @@
 module Handler.Admin where
 
-import           Control.Monad.IO.Class (MonadIO)
 import           Control.Monad
+import           Control.Monad.IO.Class (MonadIO)
+import           Data.Maybe (isJust)
 import qualified Data.Text as T
 import qualified Data.Text.Lazy as L
 import           Handler.Renderers
@@ -60,6 +61,17 @@ getEditPostR = postR . Just
 postEditPostR :: PostId -> Handler RepHtml
 postEditPostR postId = do
   newPost <- fst . fst <$> runFormPost (postForm Nothing)
+  -- if 'Delete' was clicked, delete the post
+  isDelete <- runInputPost $ iopt boolField "delete"
+  liftIO $ print isDelete
+  when (isJust isDelete) $ case newPost of
+    FormSuccess _ -> do
+      -- have to do this manually since sqlite doesn't cascade
+      runDB $ delete postId >> deleteWhere [PostTagPostId ==. postId]
+      redirect RootR
+    _ -> redirect $ EditPostR postId
+
+
   case newPost of
     FormSuccess postf -> do
       _ <- runDB $ do
