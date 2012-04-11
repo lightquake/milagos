@@ -69,24 +69,7 @@ div#header {
 
 body {
     font-family: Helvetiva, Arial, sans-serif;
-    background:
-    radial-gradient(black 15%, transparent 16%) 0 0,
-    radial-gradient(black 15%, transparent 16%) 4px 4px,
-    radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
-    radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 4px 5px;
-    background:
-    -moz-radial-gradient(black 15%, transparent 16%) 0 0,
-    -moz-radial-gradient(black 15%, transparent 16%) 4px 4px,
-    -moz-radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
-    -moz-radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 4px 5px;
-    background:
-    -webkit-radial-gradient(black 15%, transparent 16%) 0 0,
-    -webkit-radial-gradient(black 15%, transparent 16%) 4px 4px,
-    -webkit-radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
-    -webkit-radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 4px 5px;
     background-color:#282828;
-    background-attachment: fixed;
-    background-size:8px 8px;
 }
 
 a {
