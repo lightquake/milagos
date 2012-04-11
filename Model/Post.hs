@@ -27,6 +27,6 @@ postsWithTag tagText = do
     Just tagEnt -> do
      som <- runJoin $ (selectOneMany (PostTagPostId <-.) postTagPostId)
        { somFilterMany = [PostTagTagId ==. entityKey tagEnt]
-       , somOrderOne = [Desc PostId] }
+       , somOrderOne = [Desc PostPosted] }
      return $ map fst som
     _ -> return []
