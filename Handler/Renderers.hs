@@ -7,6 +7,7 @@ import           Data.Time
 import           Import hiding (parseTime)
 import           Prelude (head, tail)
 import           System.Locale
+import           Yesod.Auth
 import           Yesod.Default.Config
 
 postWidget :: Entity Post -> Handler Widget
@@ -28,8 +29,9 @@ blogLayout :: Widget -> Handler RepHtml
 blogLayout widget = do
   ae <- appExtra . settings <$> getYesod
   mmsg <- getMessage
+  loggedIn <- isJust <$> maybeAuthId
   let blogTitle = extraTitle ae
-      mAnalytics = extraAnalytics ae
+      mAnalytics = if loggedIn then Nothing else extraAnalytics ae
   defaultLayout $(widgetFile "blog-layout")
 
 adminLayout :: Widget -> Handler RepHtml
