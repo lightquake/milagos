@@ -9,7 +9,7 @@
       \ /  <a href=@{EditPostR postKey}>Edit Post</a>
    <span .tags>
      $if not (null tags)
-     Tagged: <a href=@{TagR $ head tags}>#{head tags}</a>
+       Tagged: <a href=@{TagR $ head tags}>#{head tags}</a>
        $forall tag <- tail tags
           , <a href=@{TagR tag}>#{tag}</a>
    <div style="clear: both;">
