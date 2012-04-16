@@ -1,31 +1,16 @@
-@outerBorder: 1px solid black;
+@outerBorder: 0px solid black;
 @innerBorder: 0px solid black;
-@bgColor: rgb(52, 129, 130);
-@bodyColor: rgb(245, 245, 245);
+@bgColor: #F9F9F9;
+@bodyColor: rgb(186, 186, 186);
 @fadeColor: black;
-
-
-div#wrapper {
-    /* wrapper shadow should always be on the bottom */
-    position: relative
-    z-index: -1000;
-
-    background: -moz-linear-gradient(top,  rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.65)), color-stop(100%,rgba(0,0,0,0))); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* IE10+ */
-    background: linear-gradient(top,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
-    background-size: 100% 100px;
-    background-repeat: no-repeat;
-}
-
 
 div#content {
     margin-left: auto;
     margin-right: auto;
     max-width: 1200px;
+    background: #{bgColor};
+    padding: 0px 20px;
+
     div#left-column {
 	float: left;
 	width: 60%;
@@ -58,37 +43,31 @@ div#content {
 div#header {
     padding-top: 30px;
     padding-bottom: 30px;
-    border-bottom: #{outerBorder};
     text-align: center;
     font-size: 48px;
-    font-weight: bold;
-    font-variant: small-caps;
-    background: #{bgColor};
-    color: white;
 }
 
 body {
     font-family: Helvetiva, Arial, sans-serif;
-    background-color: #282828;
-    background: url('/static/img/tile.png');
-    background-attachment: fixed;
-    background-repeat: repeat;
+    background: url('/static/img/tile.png') repeat;
+    min-width: 600px;
 }
 
-a {
-    text-decoration: none;
-}
 
 
 a.title {
-    color: inherit;
+    color: black;
 }
 
 a.title:hover {
     color: #BBB;
 }
 
-@shadow: 5px 5px 2px black;
+a.title:visited {
+    color: black;
+}
+
+@shadow: 6px 6px 9px #CCC;
 
 .shadowed {
    -moz-box-shadow: #{shadow};
@@ -97,33 +76,29 @@ a.title:hover {
 }
 
 div.post {
-
     clear: both;
-    color: white;
-    padding: 1px 0px 0px 0px;
+    padding: 20px 20px;
     margin-top: 20px;
     margin-bottom: 20px;
     height: auto;
     div.title {
 	display: inline-block;
 	position: relative;
-	box-shadow: 5px 5px 2px black;
 	padding: 5px 10px;
 	font-size: 200%;
 	border-top: #{outerBorder};
 	border-left: #{outerBorder};
 	border-right: #{outerBorder};
 	border-bottom: #{innerBorder};
-	background: #{bgColor};
     }
     .content {
 	position: relative;
 	z-index: 1;
 	font-family: Georgia, serif;
-	background: white;
+        font-size: 18px;
+        line-height: 1.4em;
 	border: #{outerBorder};
 	color: black;
-	padding: 8px 15px;
     }
     .metadata {
 	margin-top: -2px;
@@ -132,13 +107,6 @@ div.post {
 	border-bottom: #{outerBorder};
 	border-top: #{innerBorder};
 	padding: 4px 8px;
-	background: #{bgColor};
-	a {
-	    color: white;
-	}
-	a:hover {
-	    color: #BBB;
-	}
 
         .tags {
           float: right;
@@ -147,4 +115,12 @@ div.post {
           text-align: right;
         }
     }
+}
+
+a {
+    text-decoration: none;
+    color: rgb(181, 0, 0);
+}
+a:visited {
+    color: rgb(140, 0, 0);
 }

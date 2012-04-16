@@ -11,16 +11,17 @@ $maybe analytics <- mAnalytics
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
 
-<div #header .noise>
-  <div #title>
-    <a .title href=@{RootR}>#{blogTitle}
 
+<div #content>
+  <div #header>
+    <div #title>
+      <a .title href=@{RootR}>#{blogTitle}
 
-<div #wrapper>
-  <div #content>
-    $maybe msg <- mmsg
-      <div #message>#{msg}
-    <div #left-column .column>
-      ^{widget}
-    <div #right-column .column>
-      ^{tagListWidget}
+  <div style="width: 480px; margin: 0px auto;">
+    <hr>
+  $maybe msg <- mmsg
+    <div #message>#{msg}
+  <div #left-column .column>
+    ^{widget}
+  <div #right-column .column>
+    ^{tagListWidget}

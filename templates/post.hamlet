@@ -1,6 +1,6 @@
-<div .title .shadowed>
+<div .title>
     <a .title href=@{PostR postKey}>#{postTitle post}
-<div .shadowed>
+<div>
   <div .content>#{postBody post}
   <div .metadata .noise>
    <span .time>
