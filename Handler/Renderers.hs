@@ -9,6 +9,7 @@ import           Prelude (head, tail)
 import           System.Locale
 import           Yesod.Auth
 import           Yesod.Default.Config
+import           Yesod.Paginator
 
 postWidget :: Entity Post -> Handler Widget
 postWidget postEnt = do
@@ -49,8 +50,6 @@ pageWidget page perPage total = when (pages > 1) $(widgetFile "navigation")
     where pages = (\(n, r) -> n + min r 1) $ total `divMod` perPage
           showNext = page < pages
 
-
-
 -- | A widget that links to the previous page. Is invisible if the
 -- current page is not at least 1.
 prevPage :: GWidget sub master ()
@@ -76,12 +75,3 @@ setParam k v = do
   let renderer = renderer' (fromJust route)
   params <- reqGetParams <$> getRequest
   return . renderer $ (k, v) : (filter ((/=) k . fst) params)
-
--- | from pbrisbin's yesod-paginator. looks up the current page, or 1
--- on failure (since an invalid page should be treated like the first
--- one)
-getCurrentPage :: GHandler s m Int
-getCurrentPage = fmap (fromMaybe 1 . go) $ lookupGetParam "p"
-    where
-      go :: Maybe Text -> Maybe Int
-      go mp = readIntegral . T.unpack =<< mp
