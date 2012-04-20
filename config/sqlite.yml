@@ -1,0 +1,20 @@
+Default: &defaults
+  database: milagos.sqlite3
+  poolsize: 10
+
+Development:
+  <<: *defaults
+
+Test:
+  database: milagos_test.sqlite3
+  <<: *defaults
+
+Staging:
+  database: milagos_staging.sqlite3
+  poolsize: 100
+  <<: *defaults
+
+Production:
+  database: milagos_production.sqlite3
+  poolsize: 100
+  <<: *defaults

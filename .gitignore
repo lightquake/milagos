@@ -3,5 +3,6 @@
 !/config/routes
 !/config/robots.txt
 !/config/example.settings.yml
+!/config/sqlite.yml
 *.sqlite3
 /static/tmp
