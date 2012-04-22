@@ -6,7 +6,7 @@
    <span .time>
       Posted: #{time}
       $if authorized
-      \ /  <a href=@{EditPostR postKey}>Edit Post</a>
+        \ /  <a href=@{EditPostR postKey}>Edit Post</a>
    <span .tags>
      $if not (null tags)
        Tagged: <a href=@{TagR $ head tags}>#{head tags}</a>
