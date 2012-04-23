@@ -124,3 +124,10 @@ a {
 a:visited {
     color: rgb(140, 0, 0);
 }
+
+pre {
+    font-size: 70%;
+    background: #F0F0F0;
+    padding: 10px 20px;
+    overflow: scroll;
+}
