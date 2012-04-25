@@ -70,9 +70,9 @@ a.title:visited {
 @shadow: 6px 6px 9px #CCC;
 
 .shadowed {
-   -moz-box-shadow: #{shadow};
-   -webkit-box-shadow: #{shadow};
-   box-shadow: #{shadow};
+    -moz-box-shadow: #{shadow};
+    -webkit-box-shadow: #{shadow};
+    box-shadow: #{shadow};
 }
 
 div.post {
@@ -109,10 +109,10 @@ div.post {
 	padding: 4px 8px;
 
         .tags {
-          float: right;
-          display: inline;
-          max-width: 60%;
-          text-align: right;
+            float: right;
+            display: inline;
+            max-width: 60%;
+            text-align: right;
         }
     }
 }
@@ -130,4 +130,39 @@ pre {
     background: #F0F0F0;
     padding: 10px 20px;
     overflow: scroll;
+}
+
+/* Stuff for pagination */
+
+div.pagination {
+    ul {
+        list-style-type: none;
+        text-align: center;
+        li {
+            background: white;
+            display: inline;
+        }
+
+        li:first-child { float: left; }
+        li:last-child { float: right; }
+
+
+        a {
+
+            padding: 6px 14px;
+            border: 1px solid black;
+            margin: 6px 10px;
+        }
+
+        li.active a {
+            color: black;
+            background: #F0F0F0;
+        }
+
+    }
+
+    padding-bottom: 40px;
+    padding-top: 30px;
+
+
 }

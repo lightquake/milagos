@@ -46,32 +46,10 @@ adminLayout widget =
 -----------------------------------------------
 
 pageWidget :: Int -> Int -> Int -> GWidget sub master ()
-pageWidget page perPage total = when (pages > 1) $(widgetFile "navigation")
-    where pages = (\(n, r) -> n + min r 1) $ total `divMod` perPage
-          showNext = page < pages
-
--- | A widget that links to the previous page. Is invisible if the
--- current page is not at least 1.
-prevPage :: GWidget sub master ()
-prevPage = do
-  page <- lift $ getCurrentPage
-  prevUrl <- lift $ setParam "p" (T.pack . show $ page - 1)
-  when (page > 1) [whamlet|<a href=#{prevUrl}>Newer</a>|]
-
--- | A widget that links to the next page. Is invisible if the current
--- page is negative (invalid).
-nextPage :: GWidget sub master ()
-nextPage = do
-  page <- lift $ getCurrentPage
-  prevUrl <- lift $ setParam "p" (T.pack . show $ page + 1)
-  when (page > 0) [whamlet|<a href=#{prevUrl}>Older</a>|]
-
-
-setParam :: Text -> Text -> GHandler sub master Text
-setParam k v = do
-  renderer' <- getUrlRenderParams
-  rtm <- getRouteToMaster
-  route <- liftM rtm <$> getCurrentRoute
-  let renderer = renderer' (fromJust route)
-  params <- reqGetParams <$> getRequest
-  return . renderer $ (k, v) : (filter ((/=) k . fst) params)
+pageWidget = paginationWidget $ PageWidgetConfig {
+    prevText = "Newer"
+  , nextText = "Older"
+  , pageCount = 2
+  , ascending = True
+  , showEllipsis = True
+  }
