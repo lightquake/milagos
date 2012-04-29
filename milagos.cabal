@@ -29,12 +29,10 @@ library
     exposed-modules: Application
     other-modules:   Foundation
                      Handler.Root
-                     Handler.Admin
                      Handler.Renderers
                      Handler.Rss
                      Import
                      Model
-                     Model.PasswordAuth
                      Model.Post
                      Model.Tag
                      Settings

@@ -6,7 +6,6 @@ module Application
 
 import           Import
 import           Settings
-import           Yesod.Auth
 import           Yesod.Default.Config
 import           Yesod.Default.Main
 import           Yesod.Default.Handlers
@@ -22,7 +21,6 @@ import           Database.Persist.GenericSql (runMigration)
 import           Network.HTTP.Conduit (newManager, def)
 
 -- Import all relevant handler modules here.
-import           Handler.Admin
 import           Handler.Root
 import           Handler.Rss
 
