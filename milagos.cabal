@@ -33,6 +33,7 @@ library
                      Handler.Rss
                      Import
                      Model
+                     Model.Loader
                      Model.Post
                      Model.Tag
                      Settings
@@ -115,3 +116,5 @@ executable         milagos
                  , yesod-paginator               >= 0.3
                  , time
                  , old-locale
+                 , filepath
+                 , split
