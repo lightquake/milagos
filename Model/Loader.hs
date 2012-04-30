@@ -1,16 +1,17 @@
-{-# LANGUAGE NoMonomorphismRestriction #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 module Model.Loader where
 
-import Control.Monad.IO.Class
-import Data.List.Split
-import Data.Text.IO (readFile)
-import Data.Time
-import Data.Yaml
-import Database.Persist
-import Import
-import System.Directory
-import System.FilePath
-import Text.Blaze (preEscapedText)
+import qualified Control.Exception.Lifted as E
+import           Control.Monad.IO.Class
+import           Data.List.Split
+import           Data.Text.IO (readFile)
+import           Data.Time
+import           Data.Yaml
+import           Database.Persist
+import           Import
+import           System.Directory
+import           System.FilePath
+import           Text.Blaze (preEscapedText)
 
 -- | Clear the database of posts so they can be loaded again.
 clearDB :: PersistQuery back m => back m ()
@@ -23,7 +24,8 @@ loadPosts :: (MonadIO (back m), PersistUnique back m) => back m ()
 loadPosts = do
   postDirectories <- liftIO . getDirectoryContents $ "posts"
   -- filter out "." and ".."
-  mapM_ loadPost (filter (\x -> length x > 2) postDirectories)
+  let safeLoad post = loadPost post `E.catch` \e -> liftIO $ print (e :: E.SomeException)
+  mapM_ safeLoad (filter (\x -> length x > 2) postDirectories)
 
 loadPost :: (MonadIO (back m), PersistUnique back m)
             => FilePath -> back m ()

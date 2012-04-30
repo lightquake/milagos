@@ -118,3 +118,4 @@ executable         milagos
                  , old-locale
                  , filepath
                  , split
+                 , lifted-base
