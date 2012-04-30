@@ -4,6 +4,7 @@ module Model.Loader where
 import qualified Control.Exception.Lifted as E
 import           Control.Monad.IO.Class
 import           Data.List.Split
+import qualified Data.Text as T
 import           Data.Text.IO (readFile)
 import           Data.Time
 import           Data.Yaml
@@ -45,16 +46,16 @@ loadPost postFolder = do
       time <- liftIO getPostTime
 
       -- insert the Post and PostTag objects
-      postId <- insert $ Post title parsedBody time
+      postId <- insert $ Post slug title parsedBody time
       mapM_ (insert . PostTag postId) tagIds
 
   where (year:month:day:_) = splitOn "-" postFolder
-        getPostTime :: IO UTCTime
+        slug = T.pack $ drop 11 postFolder
+        date = fromGregorian (read year) (read month) (read day)
         getPostTime = do
           tz <- getCurrentTimeZone
           -- we can't map read here because the first argument is an
           -- Integer, but the others are Ints
-          let date = fromGregorian (read year) (read month) (read day)
           return $ localTimeToUTC tz $ LocalTime date midnight
 
 

@@ -6,6 +6,6 @@
   $forall postEnt <- posts
     <item>
       <title>#{postTitle $ entityVal postEnt}
-      <guid>#{renderer $ PostR (entityKey postEnt)}
-      <link>#{renderer $ PostR (entityKey postEnt)}
+      <guid>#{renderer $ router $ entityVal postEnt}
+      <link>#{renderer $ router $ entityVal postEnt}
       <description>#{L.toStrict $ renderHtml $ postBody $ entityVal postEnt}

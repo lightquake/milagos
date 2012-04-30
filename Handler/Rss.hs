@@ -1,18 +1,20 @@
 module Handler.Rss where
 
-import Control.Applicative
+import           Control.Applicative
 import qualified Data.Text.Lazy as L
-import Import
-import Text.Blaze.Renderer.Text
-import Text.Hamlet.XML
-import Text.XML
-import Yesod.Default.Config
+import           Handler.Renderers (postRouter)
+import           Import
+import           Text.Blaze.Renderer.Text
+import           Text.Hamlet.XML
+import           Text.XML
+import           Yesod.Default.Config
 
 getRssR :: Handler RepXml
 getRssR = do
   posts <- runDB $ selectList [] [Desc PostId, LimitTo 20]
   blogTitle <- extraTitle . appExtra . settings <$> getYesod
   gurp <- getUrlRenderParams
+  router <- postRouter
   let renderer route = gurp route []
       description = "A Milagos blog"
   return $ buildDoc $(xmlFile "templates/rss.xhamlet")

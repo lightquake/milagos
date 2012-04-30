@@ -8,6 +8,16 @@ import           System.Locale
 import           Yesod.Default.Config
 import           Yesod.Paginator
 
+
+-- | Get a function that turns Posts into Routes. Useful for putting
+-- in Hamlet templates.
+postRouter :: Handler (PostGeneric backend -> Route Milagos)
+postRouter = liftIO $ do
+  tz <- getCurrentTimeZone
+  return $ \(Post slug _ _ time) ->
+    let (year, month, day) = toGregorian . localDay . utcToLocalTime tz $ time
+        in PostR year month day slug
+
 postWidget :: Entity Post -> Handler Widget
 postWidget postEnt = do
   let Entity postKey post = postEnt
@@ -15,6 +25,7 @@ postWidget postEnt = do
   localTime <- liftIO . utcToLocalZonedTime $ postPosted post
   -- like April 11, 2012
   let time = formatTime defaultTimeLocale "%B %e, %Y" localTime
+  router <- postRouter
   return $(widgetFile "post")
 
 tagListWidget :: Widget

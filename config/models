@@ -1,7 +1,10 @@
 Post
+    slug Text
     title Text
     body Html
     posted UTCTime default=current_timestamp
+    UniqueTimeSlug posted slug
+
 Tag
     name Text
     UniqueTagName name
