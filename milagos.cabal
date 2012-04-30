@@ -119,3 +119,4 @@ executable         milagos
                  , filepath
                  , split
                  , lifted-base
+                 , discount

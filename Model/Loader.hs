@@ -12,6 +12,7 @@ import           Import
 import           System.Directory
 import           System.FilePath
 import           Text.Blaze (preEscapedText)
+import           Text.Discount
 
 -- | Clear the database of posts so they can be loaded again.
 clearDB :: PersistQuery back m => back m ()
@@ -24,7 +25,8 @@ loadPosts :: (MonadIO (back m), PersistUnique back m) => back m ()
 loadPosts = do
   postDirectories <- liftIO . getDirectoryContents $ "posts"
   -- filter out "." and ".."
-  let safeLoad post = loadPost post `E.catch` \e -> liftIO $ print (e :: E.SomeException)
+  let safeLoad post = loadPost post `E.catch` \e -> liftIO . putStrLn $
+        "While loading " ++ post ++ " caught " ++ show (e :: E.SomeException)
   mapM_ safeLoad (filter (\x -> length x > 2) postDirectories)
 
 loadPost :: (MonadIO (back m), PersistUnique back m)
@@ -32,6 +34,7 @@ loadPost :: (MonadIO (back m), PersistUnique back m)
 loadPost postFolder = do
   body <- liftIO . readFile $ "posts" </> postFolder </> "post.markdown"
   mMeta <- liftIO . decodeFile $ "posts" </> postFolder </> "meta.yml"
+  let parsedBody = preEscapedText $ parseMarkdownUtf8 [] body
 
   case mMeta of
     Nothing -> fail "failed to parse metadata!"
@@ -42,7 +45,7 @@ loadPost postFolder = do
       time <- liftIO getPostTime
 
       -- insert the Post and PostTag objects
-      postId <- insert $ Post title (preEscapedText body) time
+      postId <- insert $ Post title parsedBody time
       mapM_ (insert . PostTag postId) tagIds
 
   where (year:month:day:_) = splitOn "-" postFolder
