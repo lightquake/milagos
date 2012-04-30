@@ -1,12 +1,8 @@
 Default: &defaults
   host: "localhost"
   port: 3000
-  # import Crypto.BCrypt,
-  # use hashPasswordUsingPolicy fastBcryptHashingPolicy to hash
-  # your password, and set that as the value of this setting.
-  password: "$2y$04$qUnEydfVutlHEswigzGTsutiD2ZSfuxk6uJmhm3zf0upZE2bASxrW"
   title: "Milagos Development"
-  #analytics: UA-12345678-9
+  #analytics: for example, UA-12345678-9
 
 Development:
   <<: *defaults
@@ -18,5 +14,10 @@ Staging:
   <<: *defaults
 
 Production:
+  # set this to the approot of your production installation
   approot: "http://www.example.com"
+  # if running behind a reverse proxy, include something like
+  # host: "127.0.0.1"
+  # port: 8003
+  # to only accept connections from localhost on port 8003
   <<: *defaults
