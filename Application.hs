@@ -7,6 +7,7 @@ module Application
 import           Import
 import           Model.Loader
 import           Settings
+import           System.IO
 import           Yesod.Default.Config
 import           Yesod.Default.Handlers
 import           Yesod.Default.Main
@@ -36,12 +37,14 @@ mkYesodDispatch "Milagos" resourcesMilagos
 -- migrations handled by Yesod.
 getApplication :: AppConfig DefaultEnv Extra -> Logger -> IO Application
 getApplication conf logger = do
+    hSetBuffering stdout NoBuffering
     manager <- newManager def
     s <- staticSite
     dbconf <- withYamlEnvironment "config/sqlite.yml" (appEnv conf)
               Database.Persist.Store.loadConfig >>=
               Database.Persist.Store.applyEnv
     p <- Database.Persist.Store.createPoolConfig (dbconf :: Settings.PersistConfig)
+    watchPosts dbconf p
     Database.Persist.Store.runPool dbconf (runMigration migrateAll >> reloadDB) p
     let foundation = Milagos conf setLogger s p manager dbconf
     app <- toWaiAppPlain foundation

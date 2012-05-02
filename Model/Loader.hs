@@ -1,4 +1,3 @@
-{-# LANGUAGE ScopedTypeVariables #-}
 module Model.Loader where
 
 import qualified Control.Exception.Lifted as E
@@ -9,11 +8,35 @@ import           Data.Text.IO (readFile)
 import           Data.Time
 import           Data.Yaml
 import           Database.Persist
+import           Database.Persist.Store
 import           Import
 import           System.Directory
 import           System.FilePath
+import           System.INotify
 import           Text.Blaze (preEscapedText)
 import           Text.Discount
+
+-- | Watch all the posts in the posts subdirectory. Takes the db
+-- configuration and pool as an option so we can generate IO actions
+-- to pass to the inotify watcher.
+watchPosts :: (MonadIO (back IO), PersistConfig c,
+               PersistUnique back IO,
+               PersistQuery back IO,
+               back ~ PersistConfigBackend c) =>
+              c -> PersistConfigPool c -> IO ()
+watchPosts dbconf pool = do
+  inotify <- initINotify
+  addWatch inotify [Create] "posts" $ watchPost inotify . filePath
+  postDirectories <- liftIO . getDirectoryContents $ "posts"
+  mapM_ (watchPost inotify) $ filter (\x -> length x > 2) postDirectories
+    where
+      changeEvents = [Create, Delete, DeleteSelf, Modify, MoveIn, MoveOut, MoveSelf]
+      watchPost :: INotify -> FilePath -> IO ()
+      watchPost i dir =
+        addWatch i changeEvents ("posts" </> dir) (const reload) >> return ()
+      reload :: IO ()
+      reload = runPool dbconf reloadDB pool
+
 
 
 -- Actions that related to reloading posts.
@@ -30,9 +53,11 @@ reloadDB = do
 loadPosts :: (MonadIO (back m), PersistUnique back m) => back m ()
 loadPosts = do
   postDirectories <- liftIO . getDirectoryContents $ "posts"
-  -- filter out "." and ".."
+
+  -- catch exceptions so we don't die on bad posts
   let safeLoad post = loadPost post `E.catch` \e -> liftIO . putStrLn $
         "While loading " ++ post ++ " caught " ++ show (e :: E.SomeException)
+  -- filter out "." and ".."
   mapM_ safeLoad (filter (\x -> length x > 2) postDirectories)
 
 loadPost :: (MonadIO (back m), PersistUnique back m)

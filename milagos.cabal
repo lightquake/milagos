@@ -120,3 +120,4 @@ executable         milagos
                  , split
                  , lifted-base
                  , discount
+                 , hinotify                      >= 0.3
