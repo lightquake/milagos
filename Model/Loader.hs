@@ -33,9 +33,10 @@ watchPosts dbconf pool = do
       changeEvents = [Create, Delete, DeleteSelf, Modify, MoveIn, MoveOut, MoveSelf]
       watchPost :: INotify -> FilePath -> IO ()
       watchPost i dir =
-        addWatch i changeEvents ("posts" </> dir) (const reload) >> return ()
-      reload :: IO ()
-      reload = runPool dbconf reloadDB pool
+        addWatch i changeEvents ("posts" </> dir) (reload dir) >> return ()
+      reload dir ev = do
+        putStrLn $ "Caught an event " ++ show ev ++ ", in " ++ dir ++ ", reloading"
+        runPool dbconf reloadDB pool
 
 
 
