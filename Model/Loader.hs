@@ -71,12 +71,12 @@ loadPost postFolder = do
     Nothing -> fail "failed to parse metadata!"
     Just meta -> do
       -- get the metadata out of the meta.yml file
-      (title, tags) <- parseMonad postData meta
+      (title, tags, draft) <- parseMonad postData meta
       tagIds <- map entityKey <$> mapM getMakeTag tags
       time <- liftIO getPostTime
 
       -- insert the Post and PostTag objects
-      postId <- insert $ Post slug title parsedBody time
+      postId <- insert $ Post draft slug title parsedBody time
       mapM_ (insert . PostTag postId) tagIds
 
   where (year:month:day:_) = splitOn "-" postFolder
@@ -97,11 +97,12 @@ loadPost postFolder = do
 ---------------------------------------------------------------------------
 
 -- Get the title and tags out of a parsed metadata Object.
-postData :: Object -> Parser (Text, [Text])
+postData :: Object -> Parser (Text, [Text], Bool)
 postData o = do
   title <- o .: "title"
   tags <- o .:? "tags" .!= []
-  return (title, tags)
+  draft <- o .:? "draft" .!= False
+  return (title, tags, draft)
 
 
 -- Given a tag name, either retrieves the tag Entity with that name

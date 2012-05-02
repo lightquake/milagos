@@ -11,7 +11,7 @@ import           Yesod.Default.Config
 
 getRssR :: Handler RepXml
 getRssR = do
-  posts <- runDB $ selectList [] [Desc PostId, LimitTo 20]
+  posts <- runDB $ selectList [PostIsDraft ==. False] [Desc PostId, LimitTo 20]
   blogTitle <- extraTitle . appExtra . settings <$> getYesod
   gurp <- getUrlRenderParams
   router <- postRouter

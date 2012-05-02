@@ -1,4 +1,5 @@
 Post
+    isDraft Bool
     slug Text
     title Text
     body Html

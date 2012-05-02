@@ -18,15 +18,18 @@ tagsFor post = do
            , somOrderOne = [Asc TagName]}
   return $ map fst som
 
--- | Given a tag name, return the list of Post entities that have it.
-postsWithTag :: (PersistUnique backend m, PersistQuery backend m) =>
-                Text -> backend m [Entity (PostGeneric backend)]
-postsWithTag tagText = do
+-- | Given a tag name, return the list of Post entities that have it,
+-- filtered by the given filter.
+postsWithTag :: (PersistUnique back m, PersistQuery back m) =>
+                [Filter (PostGeneric back)] -> Text
+                -> back m [Entity (PostGeneric back)]
+postsWithTag filters tagText = do
   tagEnt' <- getBy $ UniqueTagName tagText
   case tagEnt' of
     Just tagEnt -> do
      som <- runJoin $ (selectOneMany (PostTagPostId <-.) postTagPostId)
        { somFilterMany = [PostTagTagId ==. entityKey tagEnt]
-       , somOrderOne = [Desc PostPosted] }
+       , somOrderOne = [Desc PostPosted]
+       , somFilterOne = filters}
      return $ map fst som
     _ -> return []

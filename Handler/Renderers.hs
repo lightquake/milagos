@@ -1,3 +1,4 @@
+{-# LANGUAGE RecordWildCards #-}
 module Handler.Renderers where
 
 import           Control.Monad
@@ -14,9 +15,9 @@ import           Yesod.Paginator
 postRouter :: Handler (PostGeneric backend -> Route Milagos)
 postRouter = liftIO $ do
   tz <- getCurrentTimeZone
-  return $ \(Post slug _ _ time) ->
-    let (year, month, day) = toGregorian . localDay . utcToLocalTime tz $ time
-        in PostR year (Padded month) (Padded day) slug
+  return $ \(Post{..}) ->
+    let (year, month, day) = toGregorian . localDay . utcToLocalTime tz $ postPosted
+        in PostR year (Padded month) (Padded day) postSlug
 
 postWidget :: Entity Post -> Handler Widget
 postWidget postEnt = do

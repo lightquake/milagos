@@ -15,7 +15,7 @@ import Yesod.Paginator
 -- inclined, or create a single monolithic file.
 getRootR :: Handler RepHtml
 getRootR = do
-  (postEnts, widget) <- runDB $ selectPaginatedWith pageWidget 6 [] [Desc PostPosted]
+  (postEnts, widget) <- runDB $ selectPaginatedWith pageWidget 6 [PostIsDraft ==. False] [Desc PostPosted]
   posts <- mapM postWidget postEnts
   blogLayout $ do
     setTitle ""
@@ -24,7 +24,7 @@ getRootR = do
 
 getTagR :: Text -> Handler RepHtml
 getTagR tagText = do
-  (postEnts, widget) <- (runDB $ postsWithTag tagText) >>= paginateWith pageWidget 6
+  (postEnts, widget) <- (runDB $ postsWithTag [PostIsDraft ==. False] tagText) >>= paginateWith pageWidget 6
   posts <- mapM postWidget postEnts
   blogLayout $ do
     setTitle $ toHtml tagText
