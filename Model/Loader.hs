@@ -26,7 +26,10 @@ watchPosts :: (MonadIO (back IO), PersistConfig c,
               c -> PersistConfigPool c -> IO ()
 watchPosts dbconf pool = do
   inotify <- initINotify
-  addWatch inotify [Create] "posts" $ watchPost inotify . filePath
+  addWatch inotify [Create] "posts" $
+    \ev -> if isDirectory ev
+           then watchPost inotify $ filePath ev
+           else return ()
   postDirectories <- liftIO . getDirectoryContents $ "posts"
   mapM_ (watchPost inotify) $ filter (\x -> length x > 2) postDirectories
     where
