@@ -16,7 +16,7 @@ postRouter = liftIO $ do
   tz <- getCurrentTimeZone
   return $ \(Post slug _ _ time) ->
     let (year, month, day) = toGregorian . localDay . utcToLocalTime tz $ time
-        in PostR year month day slug
+        in PostR year (Padded month) (Padded day) slug
 
 postWidget :: Entity Post -> Handler Widget
 postWidget postEnt = do

@@ -31,8 +31,8 @@ getTagR tagText = do
     $(widgetFile "post-list")
     [whamlet|<div .pagination>^{widget}|]
 
-getPostR :: Integer -> Int -> Int -> Text -> Handler RepHtml
-getPostR year month day slug = do
+getPostR :: Integer -> Padded -> Padded -> Text -> Handler RepHtml
+getPostR year (Padded month) (Padded day) slug = do
   tz <- liftIO getCurrentTimeZone
   let date = fromGregorian year month day
       utcTime = localTimeToUTC tz $ LocalTime date midnight

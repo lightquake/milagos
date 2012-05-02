@@ -5,5 +5,5 @@
 
 / RootR GET
 /tag/#Text TagR GET
-/post/#Integer/#Int/#Int/#Text PostR GET
+/post/#Integer/#Padded/#Padded/#Text PostR GET
 /feed/rss RssR GET
