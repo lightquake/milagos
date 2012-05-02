@@ -1,8 +1,0 @@
-##{fvId titleView} {
-    font-size: 1.7em;
-    width: 540px;
-}
-
-##{fvId bodyView} {
-    height: 30em;
-}
