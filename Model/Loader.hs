@@ -15,12 +15,17 @@ import           System.FilePath
 import           Text.Blaze (preEscapedText)
 import           Text.Discount
 
--- | Clear the database of posts so they can be loaded again.
-clearDB :: PersistQuery back m => back m ()
-clearDB = do
+
+-- Actions that related to reloading posts.
+--------------------------------------------------------
+
+-- | Remove all the posts, then repopulate the database from "posts/"
+reloadDB :: (PersistQuery back m, PersistUnique back m, MonadIO (back m)) => back m ()
+reloadDB = do
   deleteWhere ([] :: [Filter Post])
   deleteWhere ([] :: [Filter Tag])
   deleteWhere ([] :: [Filter PostTag])
+  loadPosts
 
 loadPosts :: (MonadIO (back m), PersistUnique back m) => back m ()
 loadPosts = do
@@ -52,13 +57,21 @@ loadPost postFolder = do
   where (year:month:day:_) = splitOn "-" postFolder
         slug = T.pack $ drop 11 postFolder
         date = fromGregorian (read year) (read month) (read day)
+        getPostTime :: IO UTCTime
         getPostTime = do
           tz <- getCurrentTimeZone
           -- we can't map read here because the first argument is an
           -- Integer, but the others are Ints
           return $ localTimeToUTC tz $ LocalTime date midnight
 
+--
 
+
+
+-- Utility functions
+---------------------------------------------------------------------------
+
+-- Get the title and tags out of a parsed metadata Object.
 postData :: Object -> Parser (Text, [Text])
 postData o = do
   title <- o .: "title"
@@ -76,3 +89,4 @@ getMakeTag name = do
     Nothing -> do
       tagId <- insert $ Tag name
       return $ Entity tagId (Tag name)
+

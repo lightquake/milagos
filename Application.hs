@@ -42,7 +42,7 @@ getApplication conf logger = do
               Database.Persist.Store.loadConfig >>=
               Database.Persist.Store.applyEnv
     p <- Database.Persist.Store.createPoolConfig (dbconf :: Settings.PersistConfig)
-    Database.Persist.Store.runPool dbconf (runMigration migrateAll >> clearDB >> loadPosts) p
+    Database.Persist.Store.runPool dbconf (runMigration migrateAll >> reloadDB) p
     let foundation = Milagos conf setLogger s p manager dbconf
     app <- toWaiAppPlain foundation
     return $ logWare app
