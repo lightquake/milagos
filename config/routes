@@ -1,12 +1,9 @@
 /static StaticR Static getStatic
-/auth   AuthR   Auth   getAuth
 
 /favicon.ico FaviconR GET
 /robots.txt RobotsR GET
 
 / RootR GET
-/admin NewPostR GET POST
 /tag/#Text TagR GET
-/post/#PostId PostR GET
-/admin/edit/#PostId EditPostR GET POST
+/post/#Integer/#Int/#Int/#Text PostR GET
 /feed/rss RssR GET

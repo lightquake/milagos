@@ -5,11 +5,11 @@ module Application
     ) where
 
 import           Import
+import           Model.Loader
 import           Settings
-import           Yesod.Auth
 import           Yesod.Default.Config
-import           Yesod.Default.Main
 import           Yesod.Default.Handlers
+import           Yesod.Default.Main
 #if DEVELOPMENT
 import           Yesod.Logger (Logger, logBS)
 import           Network.Wai.Middleware.RequestLogger (logCallbackDev)
@@ -22,7 +22,6 @@ import           Database.Persist.GenericSql (runMigration)
 import           Network.HTTP.Conduit (newManager, def)
 
 -- Import all relevant handler modules here.
-import           Handler.Admin
 import           Handler.Root
 import           Handler.Rss
 
@@ -43,7 +42,7 @@ getApplication conf logger = do
               Database.Persist.Store.loadConfig >>=
               Database.Persist.Store.applyEnv
     p <- Database.Persist.Store.createPoolConfig (dbconf :: Settings.PersistConfig)
-    Database.Persist.Store.runPool dbconf (runMigration migrateAll) p
+    Database.Persist.Store.runPool dbconf (runMigration migrateAll >> clearDB >> loadPosts) p
     let foundation = Milagos conf setLogger s p manager dbconf
     app <- toWaiAppPlain foundation
     return $ logWare app

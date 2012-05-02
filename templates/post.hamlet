@@ -1,12 +1,10 @@
 <div .title>
-    <a .title href=@{PostR postKey}>#{postTitle post}
+    <a .title href=@{router post}>#{postTitle post}
 <div>
   <div .content>#{postBody post}
   <div .metadata .noise>
    <span .time>
       Posted: #{time}
-      $if authorized
-        \ /  <a href=@{EditPostR postKey}>Edit Post</a>
    <span .tags>
      $if not (null tags)
        Tagged: <a href=@{TagR $ head tags}>#{head tags}</a>

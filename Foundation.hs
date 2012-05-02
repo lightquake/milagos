@@ -35,7 +35,6 @@ import           Text.Jasmine (minifym)
 import           Web.ClientSession (getKey)
 
 import           Data.Text (Text)
-import           Model.PasswordAuth
 import           Types
 
 -- | The site argument for your application. This can be a good place to
@@ -97,15 +96,6 @@ instance Yesod Milagos where
         Just $ uncurry (joinPath y (Settings.staticRoot $ settings y)) $ renderRoute s
     urlRenderOverride _ _ = Nothing
 
-    -- The page to be redirected to when authentication is required.
-    authRoute _ = Just $ AuthR LoginR
-
-    -- /admin requires authorization
-    isAuthorized NewPostR = needsAuth
-    isAuthorized (EditPostR _) = needsAuth
-    isAuthorized _ = const $ return Authorized
-
-
     messageLogger y loc level msg =
       formatLogText (getLogger y) loc level msg >>= logMsg (getLogger y)
 
@@ -130,27 +120,6 @@ instance YesodPersist Milagos where
             (persistConfig master)
             f
             (connPool master)
-
-
-
-instance YesodAuth Milagos where
-    type AuthId Milagos = ()
-
-    -- Where to send a user after successful login
-    loginDest _ = RootR
-    -- Where to send a user after logout
-    logoutDest _ = RootR
-
-    getAuthId = const . return $ Just ()
-
-    -- You can add other plugins like BrowserID, email or OAuth here
-    authPlugins app =
-      [authPassword (extraPassword . appExtra . settings $ app)]
-
-    authHttpManager = httpManager
-
--- This instance is required to use forms. You can modify renderMessage to
--- achieve customized and internationalized form validation messages.
 instance RenderMessage Milagos FormMessage where
     renderMessage _ _ = defaultFormMessage
 

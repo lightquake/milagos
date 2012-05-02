@@ -119,7 +119,7 @@ div.post {
 
 a {
     text-decoration: none;
-    color: rgb(181, 0, 0);
+    color: rgb(220, 0, 0);
 }
 a:visited {
     color: rgb(140, 0, 0);

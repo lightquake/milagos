@@ -6,3 +6,4 @@
 !/config/sqlite.yml
 *.sqlite3
 /static/tmp
+/posts

@@ -29,12 +29,11 @@ library
     exposed-modules: Application
     other-modules:   Foundation
                      Handler.Root
-                     Handler.Admin
                      Handler.Renderers
                      Handler.Rss
                      Import
                      Model
-                     Model.PasswordAuth
+                     Model.Loader
                      Model.Post
                      Model.Tag
                      Settings
@@ -117,3 +116,7 @@ executable         milagos
                  , yesod-paginator               >= 0.3
                  , time
                  , old-locale
+                 , filepath
+                 , split
+                 , lifted-base
+                 , discount

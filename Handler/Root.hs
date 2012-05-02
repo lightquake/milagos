@@ -1,6 +1,7 @@
 module Handler.Root where
 
 import Control.Monad
+import Data.Time
 import Handler.Renderers
 import Import
 import Yesod.Paginator
@@ -30,12 +31,15 @@ getTagR tagText = do
     $(widgetFile "post-list")
     [whamlet|<div .pagination>^{widget}|]
 
-getPostR :: PostId -> Handler RepHtml
-getPostR postId = do
-  postVal <- runDB $ get404 postId
-  posts <- (:[]) <$> postWidget (Entity postId postVal)
+getPostR :: Integer -> Int -> Int -> Text -> Handler RepHtml
+getPostR year month day slug = do
+  tz <- liftIO getCurrentTimeZone
+  let date = fromGregorian year month day
+      utcTime = localTimeToUTC tz $ LocalTime date midnight
+  postEnt <- runDB . getBy404 $ UniqueTimeSlug utcTime slug
+  posts <- (:[]) <$> postWidget postEnt
   blogLayout $ do
-    setTitle $ toHtml . postTitle $ postVal
+    setTitle $ toHtml . postTitle . entityVal $ postEnt
     $(widgetFile "post-list")
 
 
