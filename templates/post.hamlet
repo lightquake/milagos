@@ -2,7 +2,7 @@
     <a .title href=@{router post}>#{postTitle post}
 <div>
   <div .content>#{postBody post}
-  <div .metadata .noise>
+  <div .metadata>
    <span .time>
       Posted: #{time}
    <span .tags>

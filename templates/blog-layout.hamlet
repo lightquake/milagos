@@ -12,16 +12,14 @@ $maybe analytics <- mAnalytics
     })();
 
 
-<div #content>
-  <div #header>
-    <div #title>
-      <a .title href=@{RootR}>#{blogTitle}
 
-  <div style="width: 480px; margin: 0px auto;">
-    <hr>
-  $maybe msg <- mmsg
-    <div #message>#{msg}
-  <div #left-column .column>
+<div .row #header>
+  <div #title>
+    <a .title href=@{RootR}>#{blogTitle}
+<div .row>
+  <hr>
+<div .row #main>
+  <div #left-column .eightcol>
     ^{widget}
-  <div #right-column .column>
+  <div #right-column .fourcol .last>
     ^{tagListWidget}

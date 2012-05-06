@@ -2,6 +2,7 @@ div.sidebar-tag-list {
     background-color: white;
     overflow: hidden;
     padding: 20px;
+    font-family: 'Helvetica Neue', Helvetica, sans-serif;
     .tag {
 	background-color: #EEE;
 	padding: 2px;
