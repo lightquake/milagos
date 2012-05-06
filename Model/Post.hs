@@ -1,6 +1,8 @@
 module Model.Post where
 
+import Control.Monad.IO.Class
 import Data.Text (Text)
+import Data.Time
 import Database.Persist
 import Database.Persist.Query.Join
 import Model
@@ -33,3 +35,8 @@ postsWithTag filters tagText = do
        , somFilterOne = filters}
      return $ map fst som
     _ -> return []
+
+publicFilter :: MonadIO m => m [Filter (PostGeneric back)]
+publicFilter = do
+  now <- liftIO getCurrentTime
+  return [PostIsDraft ==. False, PostPosted <=. now]

@@ -28,7 +28,7 @@ library
 
     exposed-modules: Application
     other-modules:   Foundation
-                     Handler.Root
+                     Handler.Posts
                      Handler.Renderers
                      Handler.Rss
                      Import
