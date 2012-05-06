@@ -1,18 +1,18 @@
 module Model.Loader where
 
 import qualified Control.Exception.Lifted as E
+import           Control.Monad
 import           Control.Monad.IO.Class
-import           Data.List.Split
-import qualified Data.Text as T
 import           Data.Text.IO (readFile)
 import           Data.Time
 import           Data.Yaml
 import           Database.Persist
 import           Database.Persist.Store
-import           Import
+import           Import hiding (parseTime)
 import           System.Directory
 import           System.FilePath
 import           System.INotify
+import           System.Locale
 import           Text.Blaze (preEscapedText)
 import           Text.Discount
 
@@ -26,10 +26,12 @@ watchPosts :: (MonadIO (back IO), PersistConfig c,
               c -> PersistConfigPool c -> IO ()
 watchPosts dbconf pool = do
   inotify <- initINotify
-  addWatch inotify [Create] "posts" $
-    \ev -> if isDirectory ev
-           then watchPost inotify $ filePath ev
-           else return ()
+  -- set up watcher to create new watchers as new directories are
+  -- created
+  _ <- addWatch inotify [Create] "posts" $
+    \ev -> when (isDirectory ev) $ watchPost inotify (filePath ev)
+
+  -- watch existing directories for changes
   postDirectories <- liftIO . getDirectoryContents $ "posts"
   mapM_ (watchPost inotify) $ filter (\x -> length x > 2) postDirectories
     where
@@ -37,6 +39,7 @@ watchPosts dbconf pool = do
       watchPost :: INotify -> FilePath -> IO ()
       watchPost i dir =
         addWatch i changeEvents ("posts" </> dir) (reload dir) >> return ()
+      reload :: FilePath -> Event -> IO ()
       reload dir ev = do
         putStrLn $ "Caught an event " ++ show ev ++ ", in " ++ dir ++ ", reloading"
         runPool dbconf reloadDB pool
@@ -61,8 +64,7 @@ loadPosts = do
   -- catch exceptions so we don't die on bad posts
   let safeLoad post = loadPost post `E.catch` \e -> liftIO . putStrLn $
         "While loading " ++ post ++ " caught " ++ show (e :: E.SomeException)
-  -- filter out "." and ".."
-  mapM_ safeLoad (filter (\x -> length x > 2) postDirectories)
+  mapM_ safeLoad (filter (\x -> x `notElem` [".", ".."]) postDirectories)
 
 loadPost :: (MonadIO (back m), PersistUnique back m)
             => FilePath -> back m ()
@@ -75,39 +77,31 @@ loadPost postFolder = do
     Nothing -> fail "failed to parse metadata!"
     Just meta -> do
       -- get the metadata out of the meta.yml file
-      (title, tags, draft) <- parseMonad postData meta
+      (post, tags) <- parseMonad (buildPost meta) parsedBody
       tagIds <- map entityKey <$> mapM getMakeTag tags
-      time <- liftIO getPostTime
 
       -- insert the Post and PostTag objects
-      postId <- insert $ Post draft slug title parsedBody time
+      postId <- insert post
       mapM_ (insert . PostTag postId) tagIds
-
-  where (year:month:day:_) = splitOn "-" postFolder
-        slug = T.pack $ drop 11 postFolder
-        date = fromGregorian (read year) (read month) (read day)
-        getPostTime :: IO UTCTime
-        getPostTime = do
-          tz <- getCurrentTimeZone
-          -- we can't map read here because the first argument is an
-          -- Integer, but the others are Ints
-          return $ localTimeToUTC tz $ LocalTime date midnight
-
---
-
 
 
 -- Utility functions
 ---------------------------------------------------------------------------
-
 -- Get the title and tags out of a parsed metadata Object.
-postData :: Object -> Parser (Text, [Text], Bool)
-postData o = do
+buildPost :: Object -> Html -> Parser (PostGeneric back, [Text])
+buildPost o body = do
   title <- o .: "title"
+  slug <- o .: "slug"
   tags <- o .:? "tags" .!= []
+  posted <- readTime defaultTimeLocale "%Y-%m-%d %H:%M:%S" <$> o .: "posted"
   draft <- o .:? "draft" .!= False
-  return (title, tags, draft)
-
+  let post = Post { postIsDraft = draft
+                  , postTitle = title
+                  , postSlug = slug
+                  , postBody = body
+                  , postPosted = posted
+                  }
+  return (post, tags)
 
 -- Given a tag name, either retrieves the tag Entity with that name
 -- from the database or creates a new one and inserts it.
