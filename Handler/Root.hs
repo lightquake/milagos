@@ -1,9 +1,11 @@
 module Handler.Root where
 
 import Control.Monad
+import qualified Data.Text as T
 import Data.Time
 import Handler.Renderers
 import Import
+import Prelude (head)
 import Yesod.Paginator
 
 -- This is a handler function for the GET request method on the RootR
@@ -15,7 +17,12 @@ import Yesod.Paginator
 -- inclined, or create a single monolithic file.
 getRootR :: Handler RepHtml
 getRootR = do
-  (postEnts, widget) <- runDB $ selectPaginatedWith pageWidget 6 [PostIsDraft ==. False] [Desc PostPosted]
+  now <- liftIO getCurrentTime
+  (postEnts, widget) <- runDB $
+                        selectPaginatedWith pageWidget 6 [
+                            PostIsDraft ==. False
+                          , PostPosted <=. now
+                          ] [Desc PostPosted]
   posts <- mapM postWidget postEnts
   blogLayout $ do
     setTitle ""
@@ -24,7 +31,9 @@ getRootR = do
 
 getTagR :: Text -> Handler RepHtml
 getTagR tagText = do
-  (postEnts, widget) <- (runDB $ postsWithTag [PostIsDraft ==. False] tagText) >>= paginateWith pageWidget 6
+  now <- liftIO getCurrentTime
+  let filters = [PostIsDraft ==. False, PostPosted <=. now]
+  (postEnts, widget) <- runDB (postsWithTag filters tagText) >>= paginateWith pageWidget 6
   posts <- mapM postWidget postEnts
   blogLayout $ do
     setTitle $ toHtml tagText
@@ -33,13 +42,24 @@ getTagR tagText = do
 
 getPostR :: Integer -> Padded -> Padded -> Text -> Handler RepHtml
 getPostR year (Padded month) (Padded day) slug = do
-  tz <- liftIO getCurrentTimeZone
-  let date = fromGregorian year month day
-      utcTime = localTimeToUTC tz $ LocalTime date midnight
-  postEnt <- runDB . getBy404 $ UniqueTimeSlug utcTime slug
+  postEnt <- getPost
   posts <- (:[]) <$> postWidget postEnt
   blogLayout $ do
     setTitle $ toHtml . postTitle . entityVal $ postEnt
     $(widgetFile "post-list")
-
-
+  where
+    getPost :: Handler (Entity Post)
+    getPost = do
+      tz <- liftIO getCurrentTimeZone
+      let date = fromGregorian year month day
+          startTime = localTimeToUTC tz $ LocalTime date midnight
+          endTime = localTimeToUTC tz $ LocalTime (succ date) midnight
+      posts <- runDB $ selectList [ PostPosted <. endTime
+                                  , PostPosted >=. startTime
+                                  , PostSlug ==. slug
+                                  ] []
+      let query = (T.pack . show) date <> ", " <> slug
+      -- error if there's more than one post, notFound if there's none
+      when (length posts > 1) $ $(logError) ("more than one post matching " <> query)
+      when (null posts) notFound
+      return $ head posts
