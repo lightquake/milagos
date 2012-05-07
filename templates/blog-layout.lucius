@@ -4,7 +4,6 @@
 
 div.row {
     background: #{bgColor};
-    padding: 0px 20px;
 }
 
 div#header {
@@ -20,6 +19,7 @@ div#main {
 
 div#right-column {
     padding-top: 20px;
+    margin-right: 20px;
 }
 
 a.title {
@@ -142,8 +142,7 @@ div.pagination {
 /* Mobile styles */
 
 @media only screen and (max-width: 767px) {
-
-    div.row { padding: 0px; }
-    div#right-column { padding-top: 0px; }
+    div#right-column { padding-top: 0px; margin-right: 0px; }
     div.post { padding-left: 0px; padding-right: 0px; }
+
 }

@@ -21,5 +21,6 @@ $maybe analytics <- mAnalytics
 <div .row #main>
   <div #left-column .eightcol>
     ^{widget}
-  <div #right-column .fourcol .last>
-    ^{tagListWidget}
+  <div .fourcol .last>
+    <div #right-column>
+      ^{tagListWidget}
