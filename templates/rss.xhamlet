@@ -3,9 +3,10 @@
   <link>#{renderer RootR}
   <description>#{description}
   <atom:link href=#{renderer RssR} rel=self type=application/rss+xml>
-  $forall postEnt <- posts
+  $forall post <- posts
     <item>
-      <title>#{postTitle $ entityVal postEnt}
-      <guid>#{renderer $ router $ entityVal postEnt}
-      <link>#{renderer $ router $ entityVal postEnt}
-      <description>#{L.toStrict $ renderHtml $ postBody $ entityVal postEnt}
+      <title>#{postTitle post}
+      <guid>#{renderer $ router post}
+      <link>#{renderer $ router post}
+      <description>#{L.toStrict $ renderHtml $ postBody post}
+      <pubDate>#{rfc822 post}
