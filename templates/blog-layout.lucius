@@ -58,6 +58,9 @@ div.post {
     padding: 0px 20px 20px 20px;
     margin-bottom: 20px;
     height: auto;
+    p {
+        padding: 10px 0px;
+    }
     div.title {
 	display: inline-block;
 	position: relative;
