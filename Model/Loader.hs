@@ -9,6 +9,7 @@ import           Data.Yaml
 import           Database.Persist
 import           Database.Persist.Store
 import           Import hiding (parseTime)
+import           Plugin.Highlight
 import           System.Directory
 import           System.FilePath
 import           System.INotify
@@ -88,12 +89,12 @@ loadPost postFolder = do
 -- Utility functions
 ---------------------------------------------------------------------------
 -- Get the title and tags out of a parsed metadata Object.
-buildPost :: Object -> Html -> Parser (PostGeneric back, [Text])
+buildPost :: Object -> Html -> Parser (PostGeneric backend, [Text])
 buildPost o body = do
   title <- o .: "title"
   slug <- o .: "slug"
   tags <- o .:? "tags" .!= []
-  posted <- readTime defaultTimeLocale "%Y-%m-%d %H:%M:%S" <$> o .: "posted"
+  posted <- zonedTimeToUTC . read <$> o .: "posted"
   draft <- o .:? "draft" .!= False
   let post = Post { postIsDraft = draft
                   , postTitle = title
