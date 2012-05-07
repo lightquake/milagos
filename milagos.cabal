@@ -36,6 +36,7 @@ library
                      Model.Loader
                      Model.Post
                      Model.Tag
+                     Plugin.Highlight
                      Settings
                      Settings.StaticFiles
                      Types
@@ -121,3 +122,4 @@ executable         milagos
                  , lifted-base
                  , discount
                  , hinotify                      >= 0.3
+                 , tagsoup

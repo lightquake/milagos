@@ -13,7 +13,6 @@ import           Plugin.Highlight
 import           System.Directory
 import           System.FilePath
 import           System.INotify
-import           System.Locale
 import           Text.Blaze (preEscapedText)
 import           Text.Discount
 
@@ -96,10 +95,11 @@ buildPost o body = do
   tags <- o .:? "tags" .!= []
   posted <- zonedTimeToUTC . read <$> o .: "posted"
   draft <- o .:? "draft" .!= False
+  highlighted <- addCodeClasses o body
   let post = Post { postIsDraft = draft
                   , postTitle = title
                   , postSlug = slug
-                  , postBody = body
+                  , postBody = highlighted
                   , postPosted = posted
                   }
   return (post, tags)
