@@ -44,3 +44,8 @@ showPosts title postEnts mwidget = do
     case mwidget of
       Just widget -> [whamlet|<div .pagination>^{widget}|]
       Nothing -> return ()
+
+getDraftsR :: Handler RepHtml
+getDraftsR = do
+  (postEnts, widget) <- runDB $ selectPaginatedWith pageWidget 6 [PostIsDraft ==. True] [Desc PostPosted]
+  showPosts "Drafts" postEnts (Just widget)
