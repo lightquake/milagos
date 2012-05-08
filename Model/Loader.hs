@@ -29,7 +29,7 @@ watchPosts dbconf pool = do
   -- set up watcher to create new watchers as new directories are
   -- created
   void . addWatch inotify [Create] "posts" $
-    \ev -> when (isDirectory ev) $ watchPost inotify (filePath ev)
+    \ev -> when (isDirectory ev) $ watchPost inotify (filePath ev) >> runPool dbconf reloadDB pool
 
   -- watch existing directories for changes
   postDirectories <- liftIO . getDirectoryContents $ "posts"
