@@ -28,17 +28,16 @@ watchPosts dbconf pool = do
   inotify <- initINotify
   -- set up watcher to create new watchers as new directories are
   -- created
-  _ <- addWatch inotify [Create] "posts" $
+  void . addWatch inotify [Create] "posts" $
     \ev -> when (isDirectory ev) $ watchPost inotify (filePath ev)
 
   -- watch existing directories for changes
   postDirectories <- liftIO . getDirectoryContents $ "posts"
-  mapM_ (watchPost inotify) $ filter (\x -> length x > 2) postDirectories
+  mapM_ (watchPost inotify) $ filter (`notElem` [".", ".."]) postDirectories
     where
       changeEvents = [Create, Delete, DeleteSelf, Modify, MoveIn, MoveOut, MoveSelf]
       watchPost :: INotify -> FilePath -> IO ()
-      watchPost i dir =
-        addWatch i changeEvents ("posts" </> dir) (reload dir) >> return ()
+      watchPost i dir = void $ addWatch i changeEvents ("posts" </> dir) (reload dir)
       reload :: FilePath -> Event -> IO ()
       reload dir ev = do
         putStrLn $ "Caught an event " ++ show ev ++ ", in " ++ dir ++ ", reloading"
