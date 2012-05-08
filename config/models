@@ -14,3 +14,9 @@ PostTag
     postId PostId
     tagId TagId
     UniquePostTag postId tagId
+
+StaticPage
+    slug Text
+    title Text
+    body Html
+    PageSlug slug

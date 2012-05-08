@@ -34,6 +34,8 @@ library
                      Import
                      Model
                      Model.Loader
+                     Model.Loader.Post
+                     Model.Loader.Util
                      Model.Post
                      Model.Tag
                      Plugin.Highlight

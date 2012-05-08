@@ -6,6 +6,7 @@ module Application
 
 import           Import
 import           Model.Loader
+import           Model.Loader.Post
 import           Settings
 import           System.IO
 import           Yesod.Default.Config
@@ -45,7 +46,7 @@ getApplication conf logger = do
               Database.Persist.Store.applyEnv
     p <- Database.Persist.Store.createPoolConfig (dbconf :: Settings.PersistConfig)
     watchPosts dbconf p
-    Database.Persist.Store.runPool dbconf (runMigration migrateAll >> reloadDB) p
+    Database.Persist.Store.runPool dbconf (runMigration migrateAll >> reloadPosts) p
     let foundation = Milagos conf setLogger s p manager dbconf
     app <- toWaiAppPlain foundation
     return $ logWare app

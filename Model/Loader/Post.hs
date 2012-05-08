@@ -6,27 +6,32 @@ import           Data.Text.IO (readFile)
 import           Data.Time
 import           Data.Yaml
 import           Import
+import           Model.Loader.Util
 import           Plugin.Highlight
 import           System.Directory
 import           System.FilePath
-import           Text.Blaze
+import           Text.Blaze (preEscapedText)
 import           Text.Discount
+
+
+-- | Remove all the posts, then repopulate the database from "posts/"
+reloadPosts :: (PersistQuery back m, PersistUnique back m, MonadIO (back m)) => back m ()
+reloadPosts = do
+  deleteWhere ([] :: [Filter Post])
+  deleteWhere ([] :: [Filter Tag])
+  deleteWhere ([] :: [Filter PostTag])
+  loadPosts
 
 -- | Load every posts from posts/ into the database.
 loadPosts :: (MonadIO (back m), PersistUnique back m) => back m ()
-loadPosts = do
-  postDirectories <- liftIO . getDirectoryContents $ "posts"
+loadPosts = loadMulti loadPost "posts"
 
-  -- catch exceptions so we don't die on bad posts
-  let safeLoad post = loadPost post `E.catch` \e -> liftIO . putStrLn $
-        "While loading " ++ post ++ " caught " ++ show (e :: E.SomeException)
-  mapM_ safeLoad (filter (\x -> x `notElem` [".", ".."]) postDirectories)
-
+-- | Load a single post from
 loadPost :: (MonadIO (back m), PersistUnique back m)
             => FilePath -> back m ()
-loadPost postFolder = do
-  body <- liftIO . readFile $ "posts" </> postFolder </> "post.markdown"
-  mMeta <- liftIO . decodeFile $ "posts" </> postFolder </> "meta.yml"
+loadPost dir = do
+  body <- liftIO . readFile $ dir </> "post.markdown"
+  mMeta <- liftIO . decodeFile $ dir </> "meta.yml"
   let parsedBody = preEscapedText $ parseMarkdownUtf8 [] body
 
   case mMeta of
@@ -70,4 +75,3 @@ getMakeTag name = do
     Nothing -> do
       tagId <- insert $ Tag name
       return $ Entity tagId (Tag name)
-
