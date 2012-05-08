@@ -36,12 +36,16 @@ postsWithTag filters tagText = do
      return $ map fst som
     _ -> return []
 
+-- | Filter for 'public' posts: ones which have a posted date in the
+-- past and that aren't marked as draft.
 publicFilter :: MonadIO m => m [Filter (PostGeneric back)]
 publicFilter = do
   now <- liftIO getCurrentTime
   return [PostIsDraft ==. False, PostPosted <=. now]
 
-
+-- | Get the list of posts posted on a given date with a given
+-- slug. Hopefully, this list will either be empty or contain exactly
+-- one element.
 postsFromDateSlug :: (MonadIO (back m), PersistQuery back m) =>
                     Day -> Text -> back m [Entity (PostGeneric back)]
 postsFromDateSlug date slug = do

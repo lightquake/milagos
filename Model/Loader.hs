@@ -56,6 +56,7 @@ reloadDB = do
   deleteWhere ([] :: [Filter PostTag])
   loadPosts
 
+-- | Load every posts from posts/ into the database.
 loadPosts :: (MonadIO (back m), PersistUnique back m) => back m ()
 loadPosts = do
   postDirectories <- liftIO . getDirectoryContents $ "posts"
@@ -86,7 +87,7 @@ loadPost postFolder = do
 
 -- Utility functions
 ---------------------------------------------------------------------------
--- Get the title and tags out of a parsed metadata Object.
+-- | Get the title and tags out of a parsed metadata Object.
 buildPost :: Object -> Html -> Parser (PostGeneric backend, [Text])
 buildPost o body = do
   title <- o .: "title"
@@ -103,7 +104,7 @@ buildPost o body = do
                   }
   return (post, tags)
 
--- Given a tag name, either retrieves the tag Entity with that name
+-- | Given a tag name, either retrieves the tag Entity with that name
 -- from the database or creates a new one and inserts it.
 getMakeTag :: PersistUnique back m => Text -> back m (Entity (TagGeneric back))
 getMakeTag name = do

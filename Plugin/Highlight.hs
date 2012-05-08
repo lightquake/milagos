@@ -7,6 +7,8 @@ import Text.Blaze (preEscapedLazyText, Html)
 import Text.Blaze.Renderer.Text (renderHtml)
 import Text.HTML.TagSoup
 
+-- | If the object has a code-language text property, then add that
+-- property as a class to all <code> blocks. Otherwise, do nothing.
 addCodeClasses :: Object -> Html -> Parser Html
 addCodeClasses o html = do
   -- get out the code-language attribute

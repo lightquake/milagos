@@ -12,7 +12,7 @@ import           Text.Hamlet.XML
 import           Text.XML
 import           Yesod.Default.Config
 
-
+-- | Render the RSS feed.
 getRssR :: Handler RepXml
 getRssR = do
   public <- publicFilter
@@ -23,6 +23,7 @@ getRssR = do
   let description = "A Milagos blog"
   return $ buildDoc $(xmlFile "templates/rss.xhamlet")
 
+-- | Build a list of XML Nodes into some XML that Yesod can serve.
 buildDoc :: [Node] -> RepXml
 buildDoc nodes = RepXml . toContent . renderText def $ doc
   where doc = Document prol (Element "rss" [("version", "2.0")
@@ -30,6 +31,7 @@ buildDoc nodes = RepXml . toContent . renderText def $ doc
                                           ] nodes) []
         prol = Prologue [] Nothing []
 
+-- | Format a post's posted time according to RFC822.
 rfc822 :: PostGeneric backend -> T.Text
 rfc822 = T.pack . formatTime defaultTimeLocale fmtString . postPosted
   where fmtString = "%a, %0d %b %Y %H:%M:%S GMT"

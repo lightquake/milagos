@@ -35,6 +35,14 @@ getPostR year (Padded month) (Padded day) slug = do
   let postEnt = head postEnts
   showPosts (postTitle . entityVal $ postEnt) [postEnt] Nothing
 
+-- | List all draft posts.
+getDraftsR :: Handler RepHtml
+getDraftsR = do
+  (postEnts, widget) <- runDB $ selectPaginatedWith pageWidget 6 [PostIsDraft ==. True] [Desc PostPosted]
+  showPosts "Drafts" postEnts (Just widget)
+
+-- | Show a list of posts given the title to prepend in the <title>
+-- tag, the list of posts, and optionally a pagination widget.
 showPosts :: Text -> [Entity Post] -> Maybe Widget -> Handler RepHtml
 showPosts title postEnts mwidget = do
   posts <- mapM postWidget postEnts
@@ -45,7 +53,3 @@ showPosts title postEnts mwidget = do
       Just widget -> [whamlet|<div .pagination>^{widget}|]
       Nothing -> return ()
 
-getDraftsR :: Handler RepHtml
-getDraftsR = do
-  (postEnts, widget) <- runDB $ selectPaginatedWith pageWidget 6 [PostIsDraft ==. True] [Desc PostPosted]
-  showPosts "Drafts" postEnts (Just widget)
