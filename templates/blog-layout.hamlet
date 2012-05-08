@@ -12,15 +12,17 @@ $maybe analytics <- mAnalytics
     })();
 
 
-
-<div .row #header>
-  <div #title>
-    <a .title href=@{RootR}>#{blogTitle}
-<div .row>
-  <hr>
-<div .row #main>
-  <div #left-column .eightcol>
-    ^{widget}
-  <div .fourcol .last>
-    <div #right-column>
-      ^{tagListWidget}
+<div .container>
+  <div .row #header>
+    <div #title>
+      <a .title href=@{RootR}>#{blogTitle}
+  <div .row>
+    <hr>
+  <div .row #main>
+    <div #left-column .eightcol>
+      ^{widget}
+    <div .fourcol .last>
+      <div #right-column>
+        ^{tagListWidget}
+  <div .row>
+    ^{footer}

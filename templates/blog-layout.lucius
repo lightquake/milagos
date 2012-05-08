@@ -2,6 +2,10 @@
 @bodyColor: rgb(186, 186, 186);
 @fadeColor: black;
 
+div.container {
+    margin-bottom: 40px;
+}
+
 div.row {
     background: #{bgColor};
 }
@@ -135,8 +139,6 @@ div.pagination {
 
     padding-bottom: 40px;
     padding-top: 30px;
-
-
 }
 
 /* Mobile styles */
@@ -144,5 +146,4 @@ div.pagination {
 @media only screen and (max-width: 767px) {
     div#right-column { padding-top: 0px; margin-right: 0px; }
     div.post { padding-left: 0px; padding-right: 0px; }
-
 }

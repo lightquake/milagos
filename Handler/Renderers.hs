@@ -40,6 +40,7 @@ blogLayout widget = do
   mmsg <- getMessage
   let blogTitle = extraTitle ae
       mAnalytics = extraAnalytics ae
+  let footer = $(widgetFile "footer")
   defaultLayout $(widgetFile "blog-layout")
 
 -- Stuff for previous/next page links.
