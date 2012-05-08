@@ -1,5 +1,0 @@
-<div .tag-list>
-  $if not (null tags)
-    <a href=@{TagR $ head tags}>#{head tags}
-    $forall tag <- tail tags
-      \ <a href=@{TagR tag}>#{tag}</a>
