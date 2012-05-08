@@ -40,3 +40,15 @@ publicFilter :: MonadIO m => m [Filter (PostGeneric back)]
 publicFilter = do
   now <- liftIO getCurrentTime
   return [PostIsDraft ==. False, PostPosted <=. now]
+
+
+postsFromDateSlug :: (MonadIO (back m), PersistQuery back m) =>
+                    Day -> Text -> back m [Entity (PostGeneric back)]
+postsFromDateSlug date slug = do
+  tz <- liftIO getCurrentTimeZone
+  let startTime = localTimeToUTC tz $ LocalTime date midnight
+      endTime = localTimeToUTC tz $ LocalTime (succ date) midnight
+  selectList [ PostPosted <. endTime
+             , PostPosted >=. startTime
+             , PostSlug ==. slug
+             ] []
