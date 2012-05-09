@@ -25,6 +25,7 @@ import           Database.Persist.GenericSql (runMigration)
 import           Network.HTTP.Conduit (newManager, def)
 
 -- Import all relevant handler modules here.
+import           Handler.Pages
 import           Handler.Posts
 import           Handler.Rss
 

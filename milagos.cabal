@@ -28,6 +28,7 @@ library
 
     exposed-modules: Application
     other-modules:   Foundation
+                     Handler.Pages
                      Handler.Posts
                      Handler.Renderers
                      Handler.Rss

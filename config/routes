@@ -8,3 +8,4 @@
 /post/#Integer/#Padded/#Padded/#Text PostR GET
 /feed/rss RssR GET
 /drafts DraftsR GET
+/page/#Text PageR GET
