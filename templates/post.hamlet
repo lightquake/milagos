@@ -1,5 +1,5 @@
 <div .title>
-    <a .title href=@{router post}>#{postTitle post}
+  <a .title href=@{router post}>#{postTitle post}
 <div>
   <div .content>#{postBody post}
   <div .metadata>

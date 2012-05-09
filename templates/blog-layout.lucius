@@ -27,18 +27,13 @@ div#right-column {
 }
 
 a.title {
+    color: black;
     font-family: 'Bree Serif', Georgia, serif;
 }
 
 body {
     font-family: Georgia, serif;
     background: url('/static/img/tile.png') repeat;
-}
-
-
-
-a.title {
-    color: black;
 }
 
 a.title:hover {
@@ -57,7 +52,7 @@ a.title:visited {
     box-shadow: #{shadow};
 }
 
-div.post {
+div.post, div.page {
     clear: both;
     padding: 0px 20px 20px 20px;
     margin-bottom: 20px;

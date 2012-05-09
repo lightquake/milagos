@@ -1,0 +1,5 @@
+<div .page>
+  <div .title>
+    <a .title href=@{PageR $ staticPageSlug page}>#{staticPageTitle page}
+  <div>
+    <div .content>#{staticPageBody page}

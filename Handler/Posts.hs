@@ -52,4 +52,3 @@ showPosts title postEnts mwidget = do
     case mwidget of
       Just widget -> [whamlet|<div .pagination>^{widget}|]
       Nothing -> return ()
-
