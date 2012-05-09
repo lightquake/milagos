@@ -1,13 +1,14 @@
-@bgColor: #F9F9F9;
-@bodyColor: rgb(186, 186, 186);
-@fadeColor: black;
+body {
+    font-family: Georgia, serif;
+    background: url('/static/img/tile.png') repeat;
+}
 
 div.container {
     margin-bottom: 40px;
 }
 
 div.row {
-    background: #{bgColor};
+    background: #F9F9F9;
 }
 
 div#header {
@@ -21,60 +22,52 @@ div#main {
     padding-top: 30px;
 }
 
+div#left-column {
+    margin-left: 20px;
+}
+
 div#right-column {
     padding-top: 20px;
     margin-right: 20px;
 }
 
-a.title {
+a.title, a.title:visited {
     color: black;
     font-family: 'Bree Serif', Georgia, serif;
-}
 
-body {
-    font-family: Georgia, serif;
-    background: url('/static/img/tile.png') repeat;
 }
 
 a.title:hover {
     color: #BBB;
 }
 
-a.title:visited {
-    color: black;
-}
-
-@shadow: 6px 6px 9px #CCC;
-
-.shadowed {
-    -moz-box-shadow: #{shadow};
-    -webkit-box-shadow: #{shadow};
-    box-shadow: #{shadow};
-}
-
-div.post, div.page {
+div.page, div.post {
     clear: both;
     padding: 0px 20px 20px 20px;
     margin-bottom: 20px;
     height: auto;
+
     p {
         padding: 10px 0px;
+        code {
+            font-size: 100%;
+        }
     }
+
     div.title {
 	display: inline-block;
 	position: relative;
-	padding: 10px 5px 20px 5px;
+	padding: 10px 5px 20px 20px;
 	font-size: 200%;
     }
     .content {
 	position: relative;
-	z-index: 1;
 	font-family: Georgia, serif;
         font-size: 16px;
         line-height: 1.6em;
-	color: black;
         padding-bottom: 20px;
     }
+
     .metadata {
 	margin-top: -2px;
 	padding: 4px 8px;
@@ -92,6 +85,7 @@ a {
     text-decoration: none;
     color: rgb(220, 0, 0);
 }
+
 a:visited {
     color: rgb(140, 0, 0);
 }
@@ -139,6 +133,7 @@ div.pagination {
 /* Mobile styles */
 
 @media only screen and (max-width: 767px) {
+    div#left-column  { margin-left: 0px; }
     div#right-column { padding-top: 0px; margin-right: 0px; }
     div.post { padding-left: 0px; padding-right: 0px; }
 }

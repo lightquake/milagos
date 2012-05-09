@@ -1,3 +1,11 @@
+@shadow: 6px 6px 9px #CCC;
+
+.shadowed {
+    -moz-box-shadow: #{shadow};
+    -webkit-box-shadow: #{shadow};
+    box-shadow: #{shadow};
+}
+
 div.sidebar-tag-list {
     background-color: white;
     overflow: hidden;
