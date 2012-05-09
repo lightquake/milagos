@@ -26,7 +26,8 @@ reloadPosts = do
 loadPosts :: (MonadIO (back m), PersistUnique back m) => back m ()
 loadPosts = loadMulti loadPost "posts"
 
--- | Load a single post from
+-- | Load a single post from disk into database, adding all the tags
+-- as necessary.
 loadPost :: (MonadIO (back m), PersistUnique back m)
             => FilePath -> back m ()
 loadPost dir = do

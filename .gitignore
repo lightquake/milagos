@@ -7,3 +7,4 @@
 *.sqlite3
 /static/tmp
 /posts
+/pages

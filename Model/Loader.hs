@@ -1,25 +1,27 @@
 module Model.Loader where
 
-import           Control.Monad
-import           Control.Monad.IO.Class
-import           Database.Persist
-import           Database.Persist.Store
-import           Import hiding (parseTime)
-import           Model.Loader.Post
-import           System.Directory
-import           System.FilePath
-import           System.INotify
+import Control.Monad
+import Control.Monad.IO.Class
+import Database.Persist
+import Database.Persist.Store
+import Import hiding (parseTime)
+import Model.Loader.Page
+import Model.Loader.Post
+import System.Directory
+import System.FilePath
+import System.INotify
 
 
 -- | Watch all the posts in the posts subdirectory. Takes the db
 -- configuration and pool as an option so we can generate IO actions
 -- to pass to the inotify watcher.
-watchPosts :: (MonadIO (back IO), PersistConfig c,
+watchPosts, watchPages :: (MonadIO (back IO), PersistConfig c,
                PersistUnique back IO,
                PersistQuery back IO,
                back ~ PersistConfigBackend c) =>
               c -> PersistConfigPool c -> IO ()
 watchPosts dbconf pool = watchDir "posts/" $ runPool dbconf reloadPosts pool
+watchPages dbconf pool = watchDir "pages/" $ runPool dbconf reloadPages pool
 
 watchDir :: FilePath -> IO () -> IO ()
 watchDir mainDir reloader = do
@@ -35,7 +37,7 @@ watchDir mainDir reloader = do
     where
       changeEvents = [Create, Delete, DeleteSelf, Modify, MoveIn, MoveOut, MoveSelf]
       watchPost :: INotify -> FilePath -> IO ()
-      watchPost i dir = void $ addWatch i changeEvents ("posts" </> dir) (reload dir)
+      watchPost i dir = void $ addWatch i changeEvents (mainDir </> dir) (reload dir)
       reload :: FilePath -> Event -> IO ()
       reload dir ev = do
         putStrLn $ "Caught an event " ++ show ev ++ ", in " ++ dir ++ ", reloading"

@@ -34,6 +34,7 @@ library
                      Import
                      Model
                      Model.Loader
+                     Model.Loader.Page
                      Model.Loader.Post
                      Model.Loader.Util
                      Model.Post
