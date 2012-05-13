@@ -7,11 +7,11 @@ div.container {
     margin-bottom: 40px;
 }
 
-div.row {
+.row {
     background: #F9F9F9;
 }
 
-div#header {
+header {
     padding-top: 30px;
     padding-bottom: 30px;
     text-align: center;
@@ -41,7 +41,7 @@ a.title:hover {
     color: #BBB;
 }
 
-div.page, div.post {
+article {
     clear: both;
     padding: 0px 20px 20px 20px;
     margin-bottom: 20px;
@@ -135,5 +135,5 @@ div.pagination {
 @media only screen and (max-width: 767px) {
     div#left-column  { margin-left: 0px; }
     div#right-column { padding-top: 0px; margin-right: 0px; }
-    div.post { padding-left: 0px; padding-right: 0px; }
+    article { padding-left: 0px; padding-right: 0px; }
 }

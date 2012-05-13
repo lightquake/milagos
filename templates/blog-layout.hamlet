@@ -13,16 +13,16 @@ $maybe analytics <- mAnalytics
 
 
 <div .container>
-  <div .row #header>
-    <div #title>
-      <a .title href=@{RootR}>#{blogTitle}
+  <header .row>
+      <div #title>
+        <a .title href=@{RootR}>#{blogTitle}
   <div .row>
     <hr>
   <div .row #main>
     <div .eightcol>
       <div #left-column>
         ^{widget}
-    <div .fourcol .last>
+    <aside .fourcol .last>
       <div #right-column>
         ^{tagListWidget}
   <div .row>
