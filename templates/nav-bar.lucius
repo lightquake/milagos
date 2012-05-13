@@ -1,22 +1,44 @@
 nav {
     background: rgb(56, 0, 23);
     padding-left: 3%;
+    padding-right: 3%;
+    color: white;
 
     ul {
-        padding: 0.6em;
+        float: left;
+        padding: 0;
+        margin: 0;
         li {
             display: inline;
             a {
                 font-family: 'Helvetica Neue', Helvetica, sans-serif;
-                color: white;
+                color: inherit;
                 text-transform: uppercase;
-                padding: 0.6em 1.8em;
+                padding: 10px 35px;
                 text-align: center;
                 border-left: 1px solid white;
                 border-right: 1px solid white;
                 /* make borders between nav bar items 1px */
                 margin-left: -1px;
+                float: left;
+            }
+
+            a:visited {
+                color: white;
             }
         }
     }
+
+    #rss {
+        /* necessary b/c rss image isn't vertically centered */
+        padding-top: 5px;
+        float: right;
+        vertical-align: baseline;
+    }
+}
+
+nav::after {
+    content: "";
+    display: table;
+    clear: both;
 }

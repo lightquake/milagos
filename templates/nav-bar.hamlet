@@ -1,6 +1,9 @@
-<nav .page-bar>
-  <ul>
+<nav>
+  <ul #page-bar>
     $forall staticPage <- staticPages
       <li>
         <a href=@{PageR $ staticPageSlug staticPage}>
           #{staticPageTitle staticPage}
+  <div #rss>
+    <a href=@{RssR}>
+       <img src="/static/img/rss.png">
