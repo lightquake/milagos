@@ -16,8 +16,9 @@ $maybe analytics <- mAnalytics
   <header .row>
       <div #title>
         <a .title href=@{RootR}>#{blogTitle}
-  <div .row>
-    <hr>
+      ^{navBarWidget}
+
+
   <div .row #main>
     <div .eightcol>
       <div #left-column>

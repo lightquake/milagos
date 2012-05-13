@@ -37,6 +37,12 @@ tagListWidget = do
   tags <- lift . runDB $ map (tagName . entityVal) <$> tagsInUse
   $(widgetFile "tag-list")
 
+navBarWidget :: Widget
+navBarWidget = do
+  staticPages <- lift . (map entityVal <$>) . runDB $ selectList [] [Asc StaticPageTitle]
+  $(widgetFile "nav-bar")
+
+
 -- | Lay out a Widget in the standard blog layout, with a sidebar,
 -- footer, etc.
 blogLayout :: Widget -> Handler RepHtml

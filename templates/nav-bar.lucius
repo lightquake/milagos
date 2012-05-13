@@ -1,0 +1,22 @@
+nav {
+    background: rgb(56, 0, 23);
+    padding-left: 3%;
+
+    ul {
+        padding: 0.6em;
+        li {
+            display: inline;
+            a {
+                font-family: 'Helvetica Neue', Helvetica, sans-serif;
+                color: white;
+                text-transform: uppercase;
+                padding: 0.6em 1.8em;
+                text-align: center;
+                border-left: 1px solid white;
+                border-right: 1px solid white;
+                /* make borders between nav bar items 1px */
+                margin-left: -1px;
+            }
+        }
+    }
+}

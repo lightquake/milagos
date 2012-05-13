@@ -1,0 +1,6 @@
+<nav .page-bar>
+  <ul>
+    $forall staticPage <- staticPages
+      <li>
+        <a href=@{PageR $ staticPageSlug staticPage}>
+          #{staticPageTitle staticPage}

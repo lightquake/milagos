@@ -11,15 +11,15 @@ div.container {
     background: #F9F9F9;
 }
 
-header {
+header #title {
     padding-top: 30px;
     padding-bottom: 30px;
-    text-align: center;
-    font-size: 3em;
+        text-align: center;
+        font-size: 3em;
 }
 
 div#main {
-    padding-top: 30px;
+    padding-top: 10px;
 }
 
 div#left-column {
