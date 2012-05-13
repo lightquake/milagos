@@ -1,6 +1,5 @@
 module Model.Loader.Post where
 
-import qualified Control.Exception.Lifted as E
 import           Control.Monad.IO.Class
 import           Data.Text.IO (readFile)
 import           Data.Time
@@ -8,7 +7,6 @@ import           Data.Yaml
 import           Import
 import           Model.Loader.Util
 import           Plugin.Highlight
-import           System.Directory
 import           System.FilePath
 import           Text.Blaze (preEscapedText)
 import           Text.Discount
