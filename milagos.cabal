@@ -45,9 +45,11 @@ library
                      Settings.StaticFiles
                      Types
 
-
-    ghc-options:   -Wall -threaded -O0
-    cpp-options:   -DDEVELOPMENT
+    if flag(dev) || flag(library-only)
+        cpp-options:   -DDEVELOPMENT
+        ghc-options:   -Wall -threaded -O0
+    else
+        ghc-options:   -Wall -threaded -O2
 
     extensions: TemplateHaskell
                 QuasiQuotes
