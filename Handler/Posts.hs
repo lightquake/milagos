@@ -36,9 +36,11 @@ getPostR year (Padded month) (Padded day) slug = do
   showPosts (postTitle . entityVal $ postEnt) [postEnt] Nothing
 
 -- | List all draft posts.
-getDraftsR :: Handler RepHtml
-getDraftsR = do
-  (postEnts, widget) <- runDB $ selectPaginatedWith pageWidget 6 [PostIsDraft ==. True] [Desc PostPosted]
+getHiddenR :: Handler RepHtml
+getHiddenR = do
+  now <- liftIO getCurrentTime
+  let hidden = FilterOr [PostIsDraft ==. True, PostPosted >. now]
+  (postEnts, widget) <- runDB $ selectPaginatedWith pageWidget 6 [hidden] [Desc PostPosted]
   showPosts "Drafts" postEnts (Just widget)
 
 -- | Show a list of posts given the title to prepend in the <title>

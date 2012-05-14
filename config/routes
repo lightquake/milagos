@@ -7,5 +7,5 @@
 /tag/#Text TagR GET
 /post/#Integer/#Padded/#Padded/#Text PostR GET
 /feed/rss RssR GET
-/drafts DraftsR GET
+/hidden HiddenR GET
 /page/#Text PageR GET
