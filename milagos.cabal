@@ -49,7 +49,7 @@ library
         cpp-options:   -DDEVELOPMENT
         ghc-options:   -Wall -threaded -O0
     else
-        ghc-options:   -Wall -threaded -O2
+        ghc-options:   -Wall -threaded -O2 -auto-all
 
     extensions: TemplateHaskell
                 QuasiQuotes
@@ -72,7 +72,7 @@ executable         milagos
         cpp-options:   -DDEVELOPMENT
         ghc-options:   -Wall -threaded -O0
     else
-        ghc-options:   -Wall -threaded -O2
+        ghc-options:   -Wall -threaded -O2  -auto-all
 
     main-is:       main.hs
 
