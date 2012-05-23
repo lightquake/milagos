@@ -20,7 +20,7 @@ getRssR = do
   blogTitle <- extraTitle . appExtra . settings <$> getYesod
   renderer <- getUrlRender
   router <- postRouter
-  let description = "A Milagos blog"
+  let description = blogTitle
   return $ buildDoc $(xmlFile "templates/rss.xhamlet")
 
 -- | Build a list of XML Nodes into some XML that Yesod can serve.
