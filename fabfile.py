@@ -10,6 +10,9 @@ def deploy():
     local("strip dist/build/milagos/milagos")
     local("scp dist/build/milagos/milagos phurst@amateurtopologist.com:/srv/milagos/")
     local("rm -rf static/tmp/*")
-    local("rsync --progress -r static phurst@amateurtopologist.com:/srv/milagos")
-    local("rsync --progress -r config phurst@amateurtopologist.com:/srv/milagos")
+    for dir in "static config themes".split(" "):
+        push_dir(dir)
     run("supervisorctl start webdaemons:milagos")
+
+def push_dir(dir):
+    local("rsync --progress -r %s phurst@amateurtopologist.com:/srv/milagos" % dir)
