@@ -13,6 +13,7 @@ module Foundation
     , module Model
     ) where
 
+import           Data.Monoid ((<>))
 import           Prelude
 
 import           Control.Applicative ((<$>))
@@ -83,10 +84,12 @@ instance Yesod Milagos where
         -- default-layout-wrapper is the entire page. Since the final
         -- value passed to hamletToRepHtml cannot be a widget, this allows
         -- you to use normal widget features in default-layout.
-        blogTitle <- extraTitle . appExtra . settings <$> getYesod
+        extras <- appExtra . settings <$> getYesod
+        let blogTitle = extraTitle extras
+            themeName = extraTheme extras
+            themeRoute = ThemeR $ StaticRoute [themeName, themeName <> ".css"] []
 
         pc <- widgetToPageContent $ do
-            $(widgetFile "normalize")
             $(widgetFile "default-layout")
         hamletToRepHtml $(hamletFile "templates/default-layout-wrapper.hamlet")
 

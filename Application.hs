@@ -43,6 +43,7 @@ getApplication conf logger = do
     hSetBuffering stdout NoBuffering
     manager <- newManager def
     s <- staticSite
+    th <- themeSite
     dbconf <- withYamlEnvironment "config/sqlite.yml" (appEnv conf)
               Database.Persist.Store.loadConfig >>=
               Database.Persist.Store.applyEnv
@@ -50,7 +51,7 @@ getApplication conf logger = do
     watchPosts dbconf p
     watchPages dbconf p
     Database.Persist.Store.runPool dbconf (runMigration migrateAll >> reloadPosts >> reloadPages) p
-    let foundation = Milagos conf setLogger s p manager dbconf
+    let foundation = Milagos conf setLogger s th p manager dbconf
     app <- toWaiAppPlain foundation
     return $ logWare app
   where

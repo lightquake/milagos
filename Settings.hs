@@ -8,6 +8,8 @@ module Settings
     , PersistConfig
     , staticRoot
     , staticDir
+    , themeRoot
+    , themeDir
     , Extra (..)
     , parseExtra
     ) where
@@ -29,8 +31,9 @@ type PersistConfig = SqliteConf
 
 -- | The location of static files on your system. This is a file system
 -- path. The default value works properly with your scaffolded site.
-staticDir :: FilePath
+staticDir, themeDir :: FilePath
 staticDir = "static"
+themeDir = "themes"
 
 -- | The base URL for your static files. As you can see by the default
 -- value, this can simply be "static" appended to your application root.
@@ -45,9 +48,9 @@ staticDir = "static"
 -- have to make a corresponding change here.
 --
 -- To see how this value is used, see urlRenderOverride in Foundation.hs
-staticRoot :: AppConfig DefaultEnv x -> Text
+staticRoot, themeRoot :: AppConfig DefaultEnv x -> Text
 staticRoot conf = [st|#{appRoot conf}/static|]
-
+themeRoot conf = [st|#{appRoot conf}/themes|]
 
 -- The rest of this file contains settings which rarely need changing by a
 -- user.
@@ -62,9 +65,11 @@ widgetFile = Yesod.Default.Util.widgetFileNoReload
 data Extra = Extra
     { extraTitle :: Text
     , extraAnalytics :: Maybe Text
+    , extraTheme :: Text
     } deriving Show
 
 parseExtra :: DefaultEnv -> Object -> Parser Extra
 parseExtra _ o = Extra
     <$> o .: "title"
     <*> o .:? "analytics"
+    <*> o .: "theme"

@@ -1,6 +1,0 @@
-footer {
-  padding: 20px 0px 20px 20px;
-  background: rgb(222, 222, 222);
-  border-top: 1px solid rgb(200, 200, 200);
-  font-family: 'Helvetica Neue', Helvetica, sans-serif;
-}

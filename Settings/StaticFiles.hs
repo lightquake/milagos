@@ -1,9 +1,9 @@
 module Settings.StaticFiles where
 
-import Prelude (IO)
-import Yesod.Static
+import           Prelude (IO)
+import           Settings (staticDir, themeDir)
+import           Yesod.Static
 import qualified Yesod.Static as Static
-import Settings (staticDir)
 
 -- | use this to create your static file serving site
 staticSite :: IO Static.Static
@@ -12,6 +12,14 @@ staticSite =
   Static.staticDevel staticDir
 #else
   Static.static staticDir
+#endif
+
+themeSite :: IO Static.Static
+themeSite =
+#ifdef DEVELOPMENT
+  Static.staticDevel themeDir
+#else
+  Static.static themeDir
 #endif
 
 -- | This generates easy references to files in the static directory at compile time,

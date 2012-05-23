@@ -12,6 +12,7 @@
         <link rel=stylesheet type=text/css href="/static/css/highlight_default.css">
         <link rel=stylesheet type=text/css href="/static/css/1140.css">
         <link rel=stylesheet type=text/css href="http://fonts.googleapis.com/css?family=Bree+Serif&subset=latin,latin-ext">
+        <link rel=stylesheet type=text/css href=@{themeRoute}>
 
         <meta name="viewport" content="width=device-width,initial-scale=1">
 

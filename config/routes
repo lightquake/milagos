@@ -1,4 +1,5 @@
 /static StaticR Static getStatic
+/themes ThemeR Static getTheme
 
 /favicon.ico FaviconR GET
 /robots.txt RobotsR GET

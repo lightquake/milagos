@@ -1,5 +1,5 @@
 module Types
-  ( Milagos (Milagos, settings, getLogger, getStatic, connPool, httpManager, persistConfig)
+  ( Milagos(..)
   , FullPost
   , Padded(..)
   ) where
@@ -21,6 +21,7 @@ data Milagos = Milagos
     { settings :: AppConfig DefaultEnv Extra
     , getLogger :: Logger
     , getStatic :: Static -- ^ Settings for static file serving.
+    , getTheme :: Static
     , connPool :: Database.Persist.Store.PersistConfigPool Settings.PersistConfig -- ^ Database connection pool.
     , httpManager :: Manager
     , persistConfig :: Settings.PersistConfig
