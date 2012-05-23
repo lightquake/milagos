@@ -16,3 +16,4 @@ def deploy():
 
 def push_dir(dir):
     local("rsync --progress -r %s phurst@amateurtopologist.com:/srv/milagos" % dir)
+    run("supervisorctl restart webdaemons:milagos")
