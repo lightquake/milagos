@@ -3,6 +3,7 @@ Default: &defaults
   port: 3000
   title: "Milagos Development"
   #analytics: for example, UA-12345678-9
+  #theme: "carbonated"
 
 Development:
   <<: *defaults
