@@ -1,3 +1,9 @@
+# MILAGOS IS NOT UNDER ACTIVE DEVELOPMENT
+
+At some point, I decided to use Snap for my engine, resulting in a
+rewrite as [itsa](https://github.com/lightquake/itsa). Milagos is
+therefore no longer going to be developed; the code here is left up solely for posterity.
+
 # Using Milagos
 
 First, pick a theme and put it in `themes/themename/themename.css`;
